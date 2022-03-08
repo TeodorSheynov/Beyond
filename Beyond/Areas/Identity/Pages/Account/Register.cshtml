@@ -1,0 +1,32 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container-log-reg">
+    <form method="post">
+        <div class="row">
+            <h2 class="login-header" style="text-align:center">Register</h2>
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="col">
+                <input asp-for="Input.Email" class="login-input" type="text" placeholder="Email">
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                <input asp-for="Input.Password" class="login-input" type="password" placeholder="Password">
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                <input asp-for="Input.ConfirmPassword" class="login-input" type="password" placeholder="Password">
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                <input class="login-button" type="submit" value="Register">
+            </div>
+            <div class="bottom-container">
+                <div class="row">
+                    <div class="col">
+                        <a style="color:white" class="log-form-links">Have an account? </a>
+                        <a asp-area="Identity" asp-page="/Account/Login" class="log-form-links" type="button">Log in.</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
