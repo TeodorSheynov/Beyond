@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> signInManager
+@inject SignInManager<IdentityUser> _signInManager
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +25,7 @@
             <h2>Beyond</h2>
         </a>
         @{
-            if (signInManager.IsSignedIn(User))
+            if (_signInManager.IsSignedIn(User))
             {
                 <button id="mobile-nav" class="mobile-nav-toggle" aria-controls="primary-nav" aria-expanded="false">
                     <span class="hidden-obj">
@@ -37,7 +37,7 @@
         }
 
         @{
-            if (signInManager.IsSignedIn(User))
+            if (_signInManager.IsSignedIn(User))
             {
                 <nav>
                     <ul data-visible="false" id="primary-nav" class="primary-nav-bar flex">
