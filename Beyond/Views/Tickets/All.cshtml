@@ -1,4 +1,6 @@
-﻿@section CSS{
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@model IEnumerable<TicketViewModel>
+@section CSS{
     <link rel="stylesheet" href="~/css/tickets.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 }
@@ -11,26 +13,17 @@
         </form>
     </div>
     <div class="tickets-container">
-        <div class="card">
-            <img class="ticket-img" src="https://i.pinimg.com/564x/15/b4/c4/15b4c44670c6154d4137269efe67692f.jpg" alt="Denim Jeans" style="width:100%">
-            <h1>Mars</h1>
-            <p class="price">$19.99</p>
-            <p>Some text about the jeans..</p>
-            <p><button class="ticket-button" onclick="window.location.href='/Tickets/More?id=5'">Add to Cart</button></p>
-        </div>
-        <div class="card">
-            <img class="ticket-img" src="https://i.pinimg.com/564x/f3/21/1c/f3211c533c7943cc3db86da8f3ef2ac1.jpg" alt="Denim Jeans" style="width:100%">
-            <h1>Enceladus</h1>
-            <p class="price">$19.99</p>
-            <p>Some text about the jeans..</p>
-            <p><button class="ticket-button" onclick="window.location.href='/Tickets/More?id=5'">Add to Cart</button></p>
-        </div>
-        <div class="card">
-            <img class="ticket-img" src="https://i.pinimg.com/564x/a8/76/d4/a876d47fd19c361e429855e6b3419bce.jpg" alt="Denim Jeans" style="width:100%">
-            <h1>Moon</h1>
-            <p class="price">$19.99</p>
-            <p>Some text about the jeans..</p>
-            <p><button class="ticket-button" onclick="window.location.href='/Tickets/More?id=5'">Add to Cart</button></p>
-        </div>
+        @{
+            foreach (var ticket in Model)
+            {
+                <div class="card">
+                    <img class="ticket-img" src="@ticket.Path" alt="@ticket.Name" style="width: 100%">
+                    <h1>@ticket.Name</h1>
+                    <p class="price">@ticket.Price</p>
+                    <p>@ticket.Description</p>
+                    <p><button class="ticket-button" onclick="window.location.href = '/Tickets/More?id=@ticket.Id'">Add to Cart</button></p>
+                </div>
+            }
+        }
     </div>
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Beyond.Migrations;
 using Microsoft.AspNetCore.Identity;
 
 namespace Beyond.Data.Models
