@@ -17,14 +17,11 @@ namespace Beyond.Data.Models
         public User User { get; set; }
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }
-        public Destination Destination { get; set; }
-        [ForeignKey(nameof(Destination))]
-        public string DestinationId { get; set; }
+        [Required]
+        public string ImgPath { get; set; }
         public Vehicle Vehicle { get; set; }
         [ForeignKey(nameof(Vehicle))]
         public string VehicleId { get; set; }
-        [Required]
-        public string ImgPath { get; set; }
         
 
     }

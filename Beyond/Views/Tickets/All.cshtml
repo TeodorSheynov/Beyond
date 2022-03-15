@@ -1,5 +1,4 @@
-﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
-@model IEnumerable<TicketViewModel>
+﻿@model IEnumerable<TicketViewModel>
 @section CSS{
     <link rel="stylesheet" href="~/css/tickets.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -21,7 +20,7 @@
                     <h1>@ticket.Name</h1>
                     <p class="price">@ticket.Price</p>
                     <p>@ticket.Description</p>
-                    <p><button class="ticket-button" onclick="window.location.href = '/Tickets/More?id=@ticket.Id'">Add to Cart</button></p>
+                    <p><button class="ticket-button" onclick="window.location.href ='/Tickets/Buy?id=@ticket.Id'">Buy</button></p>
                 </div>
             }
         }

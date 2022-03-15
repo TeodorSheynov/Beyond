@@ -9,34 +9,24 @@ window.addEventListener("resize", () => {
 
 document.addEventListener("DOMContentLoaded", () => document.body.classList.remove("preload"))
 
-var home = document.getElementById('home');
-var destinations = document.getElementById('destinations');
-var crew = document.getElementById('crew');
-var bod = document.getElementById("bod-bg");
-var register
 
+var bod = document.getElementById("bod-bg");
 window.addEventListener('load', (e) => {
     bod.classList.add('loaded');
 });
 
-var cls = ["home", "crew", "destinations"];
-var loc = window.location.pathname;
-if (loc === "/Crew") {
-    bod.classList.remove(...cls);
-    bod.classList.add("crew");
-}else if (loc === "/Home" || loc==="/") {
-    bod.classList.remove(...cls);
-    bod.classList.add("home");
-}else if (loc === "/Destinations") {
+var cls = ["home", "crew", "destinations", "reglog"];
+var loc = window.location.href.toLowerCase();
+var register = loc.indexOf("/identity/account/register") !== -1;
+var login = loc.indexOf("/identity/account/login") !== -1;
+var destinations = loc.indexOf("/destinations") !== -1;
+if (destinations) {
     bod.classList.remove(...cls);
     bod.classList.add("destinations");
-}else if (loc === "/Identity/Account/Register" || loc === "/Identity/Account/Login") {
+} else if (register || login) {
     bod.classList.remove(...cls);
     bod.classList.add("reglog");
-} else if (loc === "/Tickets/All") {
-    bod.classList.remove(...cls);
-    bod.classList.add("crew");
 } else {
     bod.classList.remove(...cls);
-    bod.classList.add("destinations");
+    bod.classList.add("crew");
 }

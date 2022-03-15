@@ -22,7 +22,9 @@ namespace Beyond.Data.Models
         [Required]
         [Column(TypeName = "decimal(15, 2)")]
         public decimal Price { get; set; }
+        [Required]
+        public  string Url { get; set; }
         public ICollection<Vehicle> Vehicles { get; set; } = new HashSet<Vehicle>();
-        public ICollection<Ticket> Tickets { get; set; }=new HashSet<Ticket>();
+
     }
 }

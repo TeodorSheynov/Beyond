@@ -1,9 +1,21 @@
 ﻿@{
     ViewData["Title"] = "Home";
 }
+@section CSS{
+    <link rel="stylesheet" href="~/css/homeVideo.css" />
+}
+<video autoplay muted loop id="myVideo">
+    <source src="/img/home-video/intro.mp4" type="video/mp4">
+</video>
 
-<div class="intro-module">
-    <h1>Travel is Beyond what you could have ever imagined.</h1>
-    <h4>Who we are?</h4>
-    <p>We bring the space travel to you.</p>
+<div class="content">
+    <h1>Heading</h1>
+    <p>Lorem ipsum...</p>
+    <!-- Use a button to pause/play the video with JavaScript -->
+    <button id="myBtn" onclick="StartPause()">Pause</button>
 </div>
+
+@section Scripts
+{
+    <script src="/js/StartPause.js"></script>
+}

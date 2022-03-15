@@ -6,6 +6,7 @@
 <head>
 
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <script src="https://kit.fontawesome.com/3e3dcba2e0.js" crossorigin="anonymous"></script>
     <link rel="manifest" href="/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
@@ -13,7 +14,7 @@
 
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - Beyond</title>
+    <title>@ViewData["Title"] Beyond</title>
     @await RenderSectionAsync("CSS", false)
     <link rel="stylesheet" href="~/css/style.css"/>
 </head>
@@ -49,20 +50,20 @@
                             <a id="tickets" class="nav-text active" asp-controller="Tickets" asp-action="All">Tickets</a>
                         </li>
                         <li>
-                            <a id="vehicles" class="nav-text active" href="#Vehicles">Vehicles</a>
-                        </li>
-                        <li>
                             <a id="destinations" class="nav-text active" asp-controller="Destinations" asp-action="Destinations">Destinations</a>
                         </li>
                         <li>
                             <a id="crew" class="nav-text active" asp-controller="Crew" asp-action="Crew">Crew</a>
                         </li>
-                        <li class="nav-item">
-                            <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+                        <li>
+                            <a class="nav-text active" asp-controller="Tickets" asp-action="MyTickets" ><i class="fa-solid fa-cart-shopping"></i></a>
+                        </li>
+                        <li>
+                            <a class="nav-text active" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="fa-solid fa-user"></i></a>
                         </li>
                         <li>
                             <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                                <a id="logout" style="cursor: pointer" class="nav-text active">Logout</a>
+                                <a id="logout" style="cursor: pointer" class="nav-text active"><i class="fa-solid fa-right-from-bracket"></i></a>
                             </form>
                         </li>
 
@@ -78,9 +79,9 @@
     </div>
 
 
-    <div class="spacing-bottom">
+ @*   <div class="spacing-bottom">
         &copy; 2022 - Beyond - <a id="privacy-link" class="log-form-links" asp-area="" asp-page="/Privacy">Privacy</a>
-    </div>
+    </div>*@
 
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

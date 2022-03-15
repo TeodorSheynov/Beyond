@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using Beyond.Data.Models;
+﻿using Beyond.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,10 +10,11 @@ namespace Beyond.Data
             : base(options)
         {
         }
-        public DbSet<Crew> Crews { get; set; }
+        public DbSet<Pilot> Pilots { get; set; }
         public DbSet<Destination> Destinations { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<Seat> Seats { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -24,6 +24,21 @@ namespace Beyond.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.Entity<User>(
+                typeBuilder =>
+                {
+                    typeBuilder.HasMany(host => host.Tickets)
+                        .WithOne(guest => guest.User)
+                        .HasForeignKey(guest => guest.UserId);
+
+                });
+            builder.Entity<Ticket>(
+                typeBuilder =>
+                {
+                    typeBuilder.HasOne(guest => guest.User)
+                        .WithMany(host => host.Tickets)
+                        .HasForeignKey(guest => guest.UserId);
+                });
         }
     }
 }

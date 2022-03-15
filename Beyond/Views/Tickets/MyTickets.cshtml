@@ -1,0 +1,81 @@
+﻿@model IEnumerable<MyTicketViewModel>
+
+@section CSS
+{
+    <link rel="stylesheet" href="/css/Cart.css">
+}
+
+<div class="wrap cf">
+    <h1 class="projTitle">Beyond The Shopping Cart</h1>
+    <div class="heading cf">
+        <h1>My Cart</h1>
+        <a href="#" class="continue">Continue Shopping</a>
+    </div>
+    <div class="cart">
+        <table style="width: 100%;">
+            <tr>
+                <th class="th-cart">Product</th>
+                <th class="th-cart">Serial Number</th>
+                <th class="th-cart">Departure</th>
+                <th class="th-cart">Seat</th>
+                <th class="th-cart">Quantity</th>
+                <th class="th-cart">Price</th>
+                <th class="th-cancel">Cancel</th>
+            </tr>
+            @{
+                foreach (var x in Model)
+                {
+                    <tr>
+                        <td class="td-cart">
+                            <div class="cartSection">
+                                <h3>@x.Name</h3>
+                            </div>
+                        </td>
+                        <td class="td-cart">
+                            <div class="prodTotal cartSection">
+                                <p class="itemNumber">@x.SerialNumber</p>
+                            </div>
+                        </td>
+                        <td class="td-cart">
+                            <div class="prodTotal cartSection">
+                                <p>@x.Departure</p>
+                            </div>
+                        </td>
+                        <td class="td-cart">
+                            <div class="prodTotal cartSection">
+                                <p>@x.SeatNumber</p>
+                            </div>
+                        </td>
+                        <td class="td-cart">
+                            <div class="prodTotal cartSection">
+                                <p>1</p>
+                            </div>
+                        </td>
+                        <td class="td-cart">
+                            <div class="prodTotal cartSection">
+                                <p>@x.Price</p>
+                            </div>
+                        </td>
+                        <td class="td-cancel">
+                            <div class="cartSection removeWrap">
+                                <a href="#" class="remove">x</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+           
+        </table>
+    </div>
+
+    <div class="subtotal cf">
+        <ul style="list-style-type: none;">
+            <li class="totalRow final"><span class="label">Total</span><span class="value">$44.00</span></li>
+            <li class="totalRow"><a href="#" class="btn continue">Checkout</a></li>
+        </ul>
+    </div>
+</div>
+@section Scripts
+{
+    @*<script src="/cartJS.js"></script>*@
+}

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Beyond.Data.Models;
 using Beyond.Data.Models.Enums;
@@ -16,11 +17,11 @@ namespace Beyond.Data
             var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
             context.Database.Migrate();
 
-            if (!context.Crews.Any())
+            if (!context.Pilots.Any())
             {
-                context.Crews.AddRange(new List<Crew>()
+                context.Pilots.AddRange(new List<Pilot>()
                 {
-                    new Crew()
+                    new Pilot()
                     {
                         Id="1",
                         Age = 34,
@@ -29,31 +30,31 @@ namespace Beyond.Data
                         Name = "Colby Smith",
                         Rank = Rank.Pilot
                     },
-                    new Crew()
+                    new Pilot()
                     {   Id = "2",
                         Age = 43,
                         Description = "Some Description",
                         ImgPath = @"/img/crew/pilot2.jpg",
                         Name = "John Smith",
-                        Rank = Rank.Assistant
+                        Rank = Rank.Pilot
                     },
-                    new Crew()
+                    new Pilot()
                     {
                         Id = "3",
                         Age = 44,
                         Description = "Some Description",
                         ImgPath = @"/img/crew/pilot3.jpg",
                         Name = "Satoshi Nakamoto",
-                        Rank = Rank.Assistant
+                        Rank = Rank.Pilot
                     },
-                    new Crew()
+                    new Pilot()
                     {
                         Id = "4",
                         Age = 34,
                         Description = "Some Description",
                         ImgPath = @"/img/crew/pilot4.jpg",
                         Name = "Lacy Colt",
-                        Rank = Rank.Assistant
+                        Rank = Rank.Pilot
                     }
                 });
                 context.SaveChanges();
@@ -62,21 +63,23 @@ namespace Beyond.Data
             {
                 context.Destinations.AddRange(new List<Destination>()
                 {
-                    new Destination()
+                    new Destination
                     {
                         Id = "1",
                         Name = "Mars",
                         Description = "The red planet",
                         Distance = 44000,
-                        Price = 9000000
+                        Price = 9000000,
+                        Url =@"/img/tickets/mars.jpg"
                     },
-                    new Destination()
+                    new Destination
                     {
                         Id = "2",
                         Name = "Moon",
                         Description = "Our Beloved moon",
                         Distance = 44000,
-                        Price = 90000
+                        Price = 90000,
+                        Url = @"/img/tickets/moon.jpg",
                     },
                     new Destination
                     {
@@ -85,6 +88,7 @@ namespace Beyond.Data
                         Description = "Saturns cold moon",
                         Distance = 44000,
                         Price = 9000000,
+                        Url = @"/img/tickets/enceladus.jpg"
 
                     }
                 });
@@ -94,50 +98,31 @@ namespace Beyond.Data
             {
                 context.Vehicles.AddRange(new List<Vehicle>()
                 {
-                    new Vehicle()
+                    new Vehicle
                     {
                         Id = "1",
                         Name = "Starship Heavy",
-                        Description = "A big ship",
-                        Seats = 12
-                    },
-                    new Vehicle()
-                    {
-                        Id="2",
-                        Name = "Dragon",
-                        Description = "A small ship",
-                        Seats = 6
-                    }
-                });
-                context.SaveChanges();
-            }
-            if (!context.Tickets.Any())
-            {
-                context.Tickets.AddRange(new List<Ticket>()
-                {
-                    new Ticket
-                    {
-                        Id = "1",
+                        Speed = 4560,
+                        PilotId = "1",
+                        SerialNumber = "SN15",
+                        Seats = 6,
+                        Departure = DateTime.Parse("06/29/2022 05:50:06"),
+                        Arrival = DateTime.Parse("12/29/2022 05:50:06"),
                         DestinationId = "1",
-                        Description = "Trip to Mars",
-                        VehicleId = "1",
-                        ImgPath = @"/img/tickets/mars.jpg"
+
+
                     },
-                    new Ticket
+                    new Vehicle
                     {
                         Id = "2",
-                        DestinationId = "2",
-                        Description = "Astonishing view from the Moon",
-                        VehicleId = "2",
-                        ImgPath = @"/img/tickets/moon.jpg"
-                    },
-                    new Ticket
-                    {
-                        Id = "3",
-                        DestinationId = "3",
-                        Description = "The cold moon of Saturn",
-                        VehicleId = "1",
-                        ImgPath = @"/img/tickets/enceladus.jpg"
+                        Name = "Dragon",
+                        Speed = 3500,
+                        PilotId = "3",
+                        SerialNumber = "S2316",
+                        Seats =4,
+                        Departure = DateTime.Parse("07/15/2022 05:50:06"),
+                        Arrival = DateTime.Parse("08/29/2022 05:50:06"),
+                        DestinationId = "2"
                     }
                 });
                 context.SaveChanges();

@@ -19,7 +19,36 @@ namespace Beyond.Migrations
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Beyond.Data.Models.Crew", b =>
+            modelBuilder.Entity("Beyond.Data.Models.Destination", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Distance")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(15,2)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Destinations");
+                });
+
+            modelBuilder.Entity("Beyond.Data.Models.Pilot", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -43,32 +72,23 @@ namespace Beyond.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Crews");
+                    b.ToTable("Pilots");
                 });
 
-            modelBuilder.Entity("Beyond.Data.Models.Destination", b =>
+            modelBuilder.Entity("Beyond.Data.Models.Seat", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("IsTaken")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("Distance")
+                    b.Property<int>("Number")
                         .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(15,2)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Destinations");
+                    b.ToTable("Seats");
                 });
 
             modelBuilder.Entity("Beyond.Data.Models.Ticket", b =>
@@ -79,9 +99,6 @@ namespace Beyond.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DestinationId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ImgPath")
                         .IsRequired()
@@ -94,8 +111,6 @@ namespace Beyond.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DestinationId");
 
                     b.HasIndex("UserId");
 
@@ -174,34 +189,42 @@ namespace Beyond.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Description")
+                    b.Property<DateTime>("Arrival")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Departure")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DestinationId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LaunchSite")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PilotId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("Seats")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Speed")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DestinationId");
+
+                    b.HasIndex("PilotId");
+
                     b.ToTable("Vehicles");
-                });
-
-            modelBuilder.Entity("DestinationVehicle", b =>
-                {
-                    b.Property<string>("DestinationsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("VehiclesId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("DestinationsId", "VehiclesId");
-
-                    b.HasIndex("VehiclesId");
-
-                    b.ToTable("DestinationVehicle");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -341,38 +364,32 @@ namespace Beyond.Migrations
 
             modelBuilder.Entity("Beyond.Data.Models.Ticket", b =>
                 {
-                    b.HasOne("Beyond.Data.Models.Destination", "Destination")
-                        .WithMany("Tickets")
-                        .HasForeignKey("DestinationId");
-
                     b.HasOne("Beyond.Data.Models.User", "User")
                         .WithMany("Tickets")
                         .HasForeignKey("UserId");
 
                     b.HasOne("Beyond.Data.Models.Vehicle", "Vehicle")
-                        .WithMany()
+                        .WithMany("Tickets")
                         .HasForeignKey("VehicleId");
-
-                    b.Navigation("Destination");
 
                     b.Navigation("User");
 
                     b.Navigation("Vehicle");
                 });
 
-            modelBuilder.Entity("DestinationVehicle", b =>
+            modelBuilder.Entity("Beyond.Data.Models.Vehicle", b =>
                 {
-                    b.HasOne("Beyond.Data.Models.Destination", null)
-                        .WithMany()
-                        .HasForeignKey("DestinationsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Beyond.Data.Models.Destination", "Destination")
+                        .WithMany("Vehicles")
+                        .HasForeignKey("DestinationId");
 
-                    b.HasOne("Beyond.Data.Models.Vehicle", null)
+                    b.HasOne("Beyond.Data.Models.Pilot", "Pilot")
                         .WithMany()
-                        .HasForeignKey("VehiclesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PilotId");
+
+                    b.Navigation("Destination");
+
+                    b.Navigation("Pilot");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -428,10 +445,15 @@ namespace Beyond.Migrations
 
             modelBuilder.Entity("Beyond.Data.Models.Destination", b =>
                 {
-                    b.Navigation("Tickets");
+                    b.Navigation("Vehicles");
                 });
 
             modelBuilder.Entity("Beyond.Data.Models.User", b =>
+                {
+                    b.Navigation("Tickets");
+                });
+
+            modelBuilder.Entity("Beyond.Data.Models.Vehicle", b =>
                 {
                     b.Navigation("Tickets");
                 });
