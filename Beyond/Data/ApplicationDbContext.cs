@@ -14,7 +14,7 @@ namespace Beyond.Data
         public DbSet<Destination> Destinations { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
-        public DbSet<Seat> Seats { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -1,7 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Beyond.Data;
+using Beyond.Data.Models;
+using Beyond.Data.Models.Enums;
 using Beyond.Models;
 using Beyond.Models.Control;
+using Beyond.Models.DTOs;
+using Beyond.Services;
+using Beyond.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Beyond.Controllers
@@ -9,9 +15,11 @@ namespace Beyond.Controllers
     public class ControlController : Controller
     {
         private ApplicationDbContext _context;
-        public ControlController(ApplicationDbContext context)
+        private readonly IEnumNames _enumValues;
+        public ControlController(ApplicationDbContext context, IEnumNames enumValues)
         {
             _context = context;
+            _enumValues = enumValues;
         }
         public IActionResult Index()
         {
@@ -40,16 +48,34 @@ namespace Beyond.Controllers
             return PartialView("_VehiclePartial");
         }
         [HttpPost]
-        public IActionResult Vehicle([FromForm] CreateVehicleViewModel createVehicleViewModel)
+        public IActionResult Vehicle([FromForm] VehicleDto formData)
         {
-            var model = createVehicleViewModel;
+            var model = formData;
             return Ok();
         }
 
         public IActionResult Pilot()
         {
+            var ranks= _enumValues.EnumRankNames();
+           
+            ViewData["ranks"] = ranks;
             return PartialView("_PilotPartial");
         }
-     
+        [HttpPost]
+        public IActionResult Pilot([FromForm] PilotDto formData)
+        {
+            var model = formData;
+            var pilot = new Pilot()
+            {
+                Age = model.Age,
+                Description = model.Description,
+                ImgPath = model.Url,
+                Rank = model.Rank,
+                Name = model.Name
+            };
+            _context.Pilots.Add(pilot);
+            _context.SaveChanges();
+            return View("Index");
+        }
     }
 }

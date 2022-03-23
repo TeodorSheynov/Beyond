@@ -28,7 +28,7 @@ namespace Beyond.Data
                         Description = "Some Description",
                         ImgPath = @"/img/crew/pilot1.jpg",
                         Name = "Colby Smith",
-                        Rank = Rank.Pilot
+                        Rank = Rank.CadetTrainee
                     },
                     new Pilot()
                     {   Id = "2",
@@ -36,7 +36,7 @@ namespace Beyond.Data
                         Description = "Some Description",
                         ImgPath = @"/img/crew/pilot2.jpg",
                         Name = "John Smith",
-                        Rank = Rank.Pilot
+                        Rank = Rank.SecondOfficer
                     },
                     new Pilot()
                     {
@@ -45,7 +45,7 @@ namespace Beyond.Data
                         Description = "Some Description",
                         ImgPath = @"/img/crew/pilot3.jpg",
                         Name = "Satoshi Nakamoto",
-                        Rank = Rank.Pilot
+                        Rank = Rank.SeniorFirstOfficer
                     },
                     new Pilot()
                     {
@@ -54,7 +54,7 @@ namespace Beyond.Data
                         Description = "Some Description",
                         ImgPath = @"/img/crew/pilot4.jpg",
                         Name = "Lacy Colt",
-                        Rank = Rank.Pilot
+                        Rank = Rank.SeniorFirstOfficer
                     }
                 });
                 context.SaveChanges();

@@ -2,6 +2,8 @@
 
 using Beyond.Data.Models;
 using Beyond.Data;
+using Beyond.Services;
+using Beyond.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +30,7 @@ namespace Beyond
                 options.UseSqlServer(@"Server=DESKTOP-NRLASJF\SQLEXPRESS;Database=Beyond;Integrated Security=true;");
             });
             services.AddDatabaseDeveloperPageExceptionFilter();
+            
 
             services.AddDefaultIdentity<User>(options =>
                 {
@@ -42,6 +45,7 @@ namespace Beyond
                 config.LoginPath = "/identity/Account/Login";
             });
             services.AddControllersWithViews();
+            services.AddScoped<IEnumNames, EnumNames>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)

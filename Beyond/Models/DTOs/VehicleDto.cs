@@ -1,6 +1,6 @@
-﻿namespace Beyond.Models
+﻿namespace Beyond.Models.DTOs
 {
-    public class CreateVehicleViewModel
+    public class VehicleDto
     {
         public string Model { get; set; }
         public int Speed { get; set; }

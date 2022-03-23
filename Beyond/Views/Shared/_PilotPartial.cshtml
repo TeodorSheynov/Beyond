@@ -1,21 +1,24 @@
 ﻿@using Beyond.Models.Control
- <div style="text-align: center; color: white;">
-        <form id="MyForm" action="#" method="post" style="display: inline-block; width: 100%; max-width: 500px;">
+<div style="text-align: center; color: white;">
+        <form id="MyForm" asp-action="Pilot" asp-controller="Control" method="post" style="display: inline-block; width: 100%; max-width: 500px;">
             <h2 class="login-header" style="text-align:center">Add Pilot</h2>
             <label for="name">Name</label><br>
             <input class="login-input" type="text" id="name" name="Name"><br>
-            <label for="speed">Age</label><br>
-            <input class="login-input" type="text" id="lname" name="Age"><br>
-            <label for="pilot">Rank</label><br>
-           @* <select class="login-input" name="PilotId" id="pilot">
+            <label for="age">Age</label><br>
+            <input class="login-input" type="text" id="age" name="Age"><br>
+            <label for="rank">Rank</label><br>
+            <select class="login-input" name="Rank" id="rank">
                 @{
-                    foreach (var pilot in ViewData["pilots"] as IList<ControlPilotsViewModel>)
+                    foreach (var rank in ViewData["ranks"] as IList<PilotRanksViewModel>)
                     {
-                        <option name="pilot" value="@pilot.Id">@pilot.Name</option>
+                        <option name="rank" value="@rank.Value">@rank.Name</option>
                     }
                 }
-            </select><br>*@
-            <label for="serialNumber">Serial Number</label><br>
+            </select><br>
+            <label for="description">Short Description</label><br>
+            <input class="login-input" type="text" id="description" name="Description"><br>
+            <label for="url">Picture Url</label><br>
+            <input  class="login-input" type="text" id="url" name="Url"><br>
             <input class="login-button" type="submit" value="Create">
         </form>
     </div>

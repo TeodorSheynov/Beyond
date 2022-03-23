@@ -28,5 +28,6 @@ namespace Beyond.Data.Models
         public DateTime Departure { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
         public string LaunchSite { get; set; }
+        public bool OnFLight { get; set; }
     }
 }

@@ -2,7 +2,10 @@
 {
     public enum Rank
     {
-        Pilot,
-        Assistant
+        TrainingCaptain=0,
+        Captain=1,
+        SeniorFirstOfficer=2,
+        SecondOfficer=3,
+        CadetTrainee=4
     }
 }
