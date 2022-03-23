@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
+
 using Beyond.Data;
 using Beyond.Data.Models;
 using Beyond.Models;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +16,16 @@ namespace Beyond.Controllers
     {
         private  ApplicationDbContext _context;
         private  UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public TicketsController(ApplicationDbContext ctx, UserManager<User> userManager)
+        public TicketsController(
+            ApplicationDbContext ctx,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager)
         {
             _context = ctx;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [Authorize]
@@ -36,7 +41,6 @@ namespace Beyond.Controllers
                     Path = x.Url,
                     Price = $"{x.Price}$"
                 }).ToList();
-                
             return View(destinations);
         }
 
@@ -66,6 +70,7 @@ namespace Beyond.Controllers
         [Authorize]
         public IActionResult Buy(string id)
         {
+            var user1 = _context.UserClaims.Select(x => x.UserId);
             var user = _context
                 .Users
                 .FirstOrDefault(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));

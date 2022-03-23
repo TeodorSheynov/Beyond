@@ -5,10 +5,11 @@
     margin: 19px;
     text-align: center;
     font-family: arial;
+    background-color: #4db8f65c;
 }
 
 .price {
-    color: grey;
+    color: #4df6b9;
     font-size: 22px;
 }
 
@@ -24,8 +25,9 @@
     font-size: 18px;
 }
 
-.ticket-button:hover {
+    .ticket-button:hover {
         opacity: 0.7;
+        background-color: #4df6b9;
     }
 
 .tickets-container {
@@ -37,7 +39,7 @@
 
     .tickets-container > * {
         flex: 0 0 33.3333%;
-        color: #545050;
+        color: #f1f1f1;
     }
 
 

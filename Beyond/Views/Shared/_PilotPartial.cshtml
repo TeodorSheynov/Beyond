@@ -1,0 +1,21 @@
+﻿@using Beyond.Models.Control
+ <div style="text-align: center; color: white;">
+        <form id="MyForm" action="#" method="post" style="display: inline-block; width: 100%; max-width: 500px;">
+            <h2 class="login-header" style="text-align:center">Add Pilot</h2>
+            <label for="name">Name</label><br>
+            <input class="login-input" type="text" id="name" name="Name"><br>
+            <label for="speed">Age</label><br>
+            <input class="login-input" type="text" id="lname" name="Age"><br>
+            <label for="pilot">Rank</label><br>
+           @* <select class="login-input" name="PilotId" id="pilot">
+                @{
+                    foreach (var pilot in ViewData["pilots"] as IList<ControlPilotsViewModel>)
+                    {
+                        <option name="pilot" value="@pilot.Id">@pilot.Name</option>
+                    }
+                }
+            </select><br>*@
+            <label for="serialNumber">Serial Number</label><br>
+            <input class="login-button" type="submit" value="Create">
+        </form>
+    </div>

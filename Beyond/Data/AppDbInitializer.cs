@@ -94,39 +94,36 @@ namespace Beyond.Data
                 });
                 context.SaveChanges();
             }
-            if (!context.Vehicles.Any())
+
+            if (context.Vehicles.Any()) return;
+            context.Vehicles.AddRange(new List<Vehicle>()
             {
-                context.Vehicles.AddRange(new List<Vehicle>()
+                new Vehicle
                 {
-                    new Vehicle
-                    {
-                        Id = "1",
-                        Name = "Starship Heavy",
-                        Speed = 4560,
-                        PilotId = "1",
-                        SerialNumber = "SN15",
-                        Seats = 6,
-                        Departure = DateTime.Parse("06/29/2022 05:50:06"),
-                        Arrival = DateTime.Parse("12/29/2022 05:50:06"),
-                        DestinationId = "1",
-
-
-                    },
-                    new Vehicle
-                    {
-                        Id = "2",
-                        Name = "Dragon",
-                        Speed = 3500,
-                        PilotId = "3",
-                        SerialNumber = "S2316",
-                        Seats =4,
-                        Departure = DateTime.Parse("07/15/2022 05:50:06"),
-                        Arrival = DateTime.Parse("08/29/2022 05:50:06"),
-                        DestinationId = "2"
-                    }
-                });
-                context.SaveChanges();
-            }
+                    Id = "1",
+                    Name = "Starship Heavy",
+                    Speed = 4560,
+                    PilotId = "1",
+                    SerialNumber = "SN15",
+                    Seats = 6,
+                    Departure = DateTime.Parse("06/29/2022 05:50:06"),
+                    Arrival = DateTime.Parse("12/29/2022 05:50:06"),
+                    DestinationId = "1",
+                },
+                new Vehicle
+                {
+                    Id = "2",
+                    Name = "Dragon",
+                    Speed = 3500,
+                    PilotId = "3",
+                    SerialNumber = "S2316",
+                    Seats =4,
+                    Departure = DateTime.Parse("07/15/2022 05:50:06"),
+                    Arrival = DateTime.Parse("08/29/2022 05:50:06"),
+                    DestinationId = "2"
+                }
+            });
+            context.SaveChanges();
         }
     }
 }

@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Models\Enums\" />
+    <Folder Include="Models\Control\" />
     <Folder Include="wwwroot\img\tickets\" />
   </ItemGroup>
 

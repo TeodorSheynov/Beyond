@@ -20,13 +20,17 @@ var loc = window.location.href.toLowerCase();
 var register = loc.indexOf("/identity/account/register") !== -1;
 var login = loc.indexOf("/identity/account/login") !== -1;
 var destinations = loc.indexOf("/destinations") !== -1;
+var control = loc.indexOf("/control");
 if (destinations) {
     bod.classList.remove(...cls);
     bod.classList.add("destinations");
 } else if (register || login) {
     bod.classList.remove(...cls);
     bod.classList.add("reglog");
-} else {
+} else if (control) {
+    bod.classList.remove(...cls);
+    bod.classList.add("reglog");
+}else {
     bod.classList.remove(...cls);
     bod.classList.add("crew");
 }

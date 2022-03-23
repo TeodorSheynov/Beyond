@@ -237,7 +237,7 @@ input[type=submit]:hover {
     input[type=text], input[type=password], input[type=email] {
         width: 99%;
         padding: 13px;
-        height: 6vh;
+        /*height: 6vh;*/
     }
 }
 @media(min-width:62rem) {
