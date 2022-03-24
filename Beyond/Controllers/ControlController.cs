@@ -77,5 +77,16 @@ namespace Beyond.Controllers
             _context.SaveChanges();
             return View("Index");
         }
+
+        public IActionResult Destination()
+        {
+            return PartialView("_DestinationPartial");
+        }
+        [HttpPost]
+        public IActionResult Destination([FromForm] DestinationDto formData)
+        {
+
+            return View("Index");
+        }
     }
 }

@@ -1,37 +1,66 @@
 ﻿@using Beyond.Models.Control
+@{
+    var pilots = ViewData["pilots"] as IList<ControlPilotsViewModel>;
+    var destinations = ViewData["destinations"] as IList<DestinationsViewModel>;
+}
 <div style="text-align: center; color: white;">
     <form id="MyForm" action="Control/Vehicle" method="post" style="display: inline-block; width: 100%; max-width: 500px;">
         <h2 class="login-header" style="text-align:center">Create Vehicle</h2>
         <label for="name">Model</label><br>
         <input class="login-input" type="text" id="name" name="Model"><br>
         <label for="speed">Speed</label><br>
-        <input class="login-input" type="text" id="lname" name="Speed"><br>
+        <input class="login-input" type="text" id="speed" name="Speed"><br>
         <label for="pilot">Choose a pilot:</label><br>
-        <select class="login-input" name="PilotId" id="pilot">
-            @{
-                foreach (var pilot in ViewData["pilots"] as IList<ControlPilotsViewModel>)
-                {
-                    <option name="pilot" value="@pilot.Id">@pilot.Name</option>
-                }
-            }
+        @if(!pilots.Any())
+        {
+        <select class="login-input" onchange="Redirect(this)">
+            <option disabled selected value="default"> -- select an option -- </option>
+            <option  value="Pilot">+ Add Pilot</option>
         </select><br>
+        }
+        else
+        {
+            <select class="login-input" name="PilotId" id="pilot">
+                @{
+                    foreach (var pilot in pilots)
+                    {
+                        <option name="pilot" value="@pilot.Id">@pilot.Name</option>
+                    }
+                }
+            </select><br>
+        }
         <label for="serialNumber">Serial Number</label><br>
-        <input class="login-input" type="text" id="lname" name="SerialNumber"><br>
+        <input class="login-input" type="text" id="serialNumber" name="SerialNumber"><br>
         <label for="seats">Seats</label><br>
-        <input class="login-input" type="text" id="lname" name="Seats"><br>
+        <input class="login-input" type="text" id="seats" name="Seats"><br>
         <label for="departure">Departure</label><br>
-        <input class="login-input" type="datetime-local" id="birthdaytime" name="Departure"><br>
+        <input class="login-input" type="datetime-local" id="departure" name="Departure"><br>
         <label for="arrival">Arrival</label><br>
-        <input class="login-input" type="datetime-local" id="birthdaytime" name="Arrival"><br>
+        <input class="login-input" type="datetime-local" id="arrival" name="Arrival"><br>
         <label for="destination">Destination</label><br>
-        <select class="login-input" name="DestinationId" id="destination">
-            @{
-                foreach (var destination in ViewData["destinations"] as IList<DestinationsViewModel>)
-                {
-                    <option name="destination" value="@destination.Id">@destination.Name</option>
+        @if (!destinations.Any())
+        {
+            <select class="login-input" onchange="Redirect(this)">
+                <option disabled selected value="default"> -- select an option -- </option>
+                <option  value="Destination">+ Add Destination</option>
+            </select><br>
+        }
+        else
+        {
+            <select class="login-input" name="DestinationId" id="destination">
+                @{
+                    foreach (var destination in destinations)
+                    {
+                        <option name="destination" value="@destination.Id">@destination.Name</option>
+                    }
                 }
-            }
-        </select><br>
+            </select><br>
+        }
+      
         <input class="login-button" type="submit" value="Create">
     </form>
+@section Scripts
+{
+    <script src="js/emptySelectRedirect.js"></script>
+}
 </div>
