@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Beyond.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220315100852_Beyond")]
+    [Migration("20220325122838_Beyond")]
     partial class Beyond
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,22 +75,6 @@ namespace Beyond.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Pilots");
-                });
-
-            modelBuilder.Entity("Beyond.Data.Models.Seat", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsTaken")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Seats");
                 });
 
             modelBuilder.Entity("Beyond.Data.Models.Ticket", b =>
@@ -206,6 +190,9 @@ namespace Beyond.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("OnFLight")
+                        .HasColumnType("bit");
 
                     b.Property<string>("PilotId")
                         .HasColumnType("nvarchar(450)");

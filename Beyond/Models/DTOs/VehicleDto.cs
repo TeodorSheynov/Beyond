@@ -10,5 +10,6 @@
         public string Departure { get; set; }
         public string Arrival { get; set; }
         public string DestinationId { get; set; }
+        public string LaunchSite { get; set; }
     }
 }

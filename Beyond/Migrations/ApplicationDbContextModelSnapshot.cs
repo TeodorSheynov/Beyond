@@ -75,22 +75,6 @@ namespace Beyond.Migrations
                     b.ToTable("Pilots");
                 });
 
-            modelBuilder.Entity("Beyond.Data.Models.Seat", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsTaken")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Seats");
-                });
-
             modelBuilder.Entity("Beyond.Data.Models.Ticket", b =>
                 {
                     b.Property<string>("Id")
@@ -204,6 +188,9 @@ namespace Beyond.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("OnFLight")
+                        .HasColumnType("bit");
 
                     b.Property<string>("PilotId")
                         .HasColumnType("nvarchar(450)");

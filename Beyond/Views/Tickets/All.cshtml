@@ -1,4 +1,5 @@
-﻿@model IEnumerable<TicketViewModel>
+﻿@using System.Security.Cryptography
+@model IEnumerable<TicketViewModel>
 @section CSS{
     <link rel="stylesheet" href="~/css/tickets.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -14,19 +15,27 @@
     </div>
     <div class="tickets-container">
         @{
-            foreach (var ticket in Model)
+            if (!Model.Any())
             {
-                <div class="card">
-                    <img class="ticket-img" src="@ticket.Path" alt="@ticket.Name" style="width: 100%">
-                    <h1>@ticket.Name</h1>
-                    <p class="price">@ticket.Price</p>
-                    <p>@ticket.Description</p>
-                    <p>Some DATE</p>
-                    <p>From Location</p>
-                    <p><button class="ticket-button" onclick="window.location.href ='/Tickets/Buy?id=@ticket.Id'">Buy</button></p>
-                    <p>tickets left : 6</p>
-                </div>
+                <h1>No Available Tickets</h1>
             }
+            else
+            {
+                foreach (var ticketViewModel in Model)
+                {
+                    <div class="card">
+                        <img class="ticket-img" src="@ticketViewModel.Path" alt="@ticketViewModel.Name" style="width: 100%">
+                        <h1>@ticketViewModel.Name</h1>
+                        <p class="price">@ticketViewModel.Price</p>
+                        <p>@ticketViewModel.Description</p>
+                        <p>@ticketViewModel.Date</p>
+                        <p>@ticketViewModel.LaunchSite</p>
+                        <p><button class="ticket-button" onclick="window.location.href ='/Tickets/Buy?id=@ticketViewModel.Id'">Buy</button></p>
+                        <p>tickets left : @ticketViewModel.TicketsLeft</p>
+                    </div>
+                } 
+            }
+            
         }
     </div>
 }

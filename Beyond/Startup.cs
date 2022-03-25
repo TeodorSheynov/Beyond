@@ -4,12 +4,14 @@ using Beyond.Data.Models;
 using Beyond.Data;
 using Beyond.Services;
 using Beyond.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+
 namespace Beyond
 {
 
@@ -27,7 +29,9 @@ namespace Beyond
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(@"Server=DESKTOP-NRLASJF\SQLEXPRESS;Database=Beyond;Integrated Security=true;");
+                options
+                    .UseLazyLoadingProxies()
+                    .UseSqlServer(@"Server=DESKTOP-NRLASJF\SQLEXPRESS;Database=Beyond;Integrated Security=true;");
             });
             services.AddDatabaseDeveloperPageExceptionFilter();
             
@@ -46,6 +50,7 @@ namespace Beyond
             });
             services.AddControllersWithViews();
             services.AddScoped<IEnumNames, EnumNames>();
+            services.AddScoped<ITakeEntityById, TakeEntityById>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)
@@ -78,7 +83,7 @@ namespace Beyond
             });
 
             //Data Seed
-            AppDbInitializer.Seed(app);
+            //AppDbInitializer.Seed(app);
         }
     }
 }

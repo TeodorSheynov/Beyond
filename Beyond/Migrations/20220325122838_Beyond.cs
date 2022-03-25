@@ -79,19 +79,6 @@ namespace Beyond.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Seats",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Number = table.Column<int>(type: "int", nullable: false),
-                    IsTaken = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Seats", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -210,7 +197,8 @@ namespace Beyond.Migrations
                     DestinationId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Arrival = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Departure = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LaunchSite = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    LaunchSite = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OnFLight = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -332,9 +320,6 @@ namespace Beyond.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "Seats");
 
             migrationBuilder.DropTable(
                 name: "Tickets");

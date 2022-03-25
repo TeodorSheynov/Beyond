@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Beyond.Data;
 using Beyond.Data.Models;
 using Beyond.Data.Models.Enums;
@@ -16,10 +18,15 @@ namespace Beyond.Controllers
     {
         private ApplicationDbContext _context;
         private readonly IEnumNames _enumValues;
-        public ControlController(ApplicationDbContext context, IEnumNames enumValues)
+        private readonly ITakeEntityById _entityById;
+        public ControlController(
+            ApplicationDbContext context,
+            IEnumNames enumValues,
+            ITakeEntityById entityById)
         {
             _context = context;
             _enumValues = enumValues;
+            _entityById = entityById;
         }
         public IActionResult Index()
         {
@@ -43,15 +50,54 @@ namespace Beyond.Controllers
                     Id = x.Id,
                     Name = x.Name,
                 }).ToList();
-            ViewData["destinations"] = destinations;
-            ViewData["pilots"] = pilots;
+            if (pilots.Count==0 )
+            {
+                ViewBag.PilotIsNull=true;
+            }
+            else
+            {
+                ViewBag.PilotIsNull = false;
+                ViewData["pilots"] = pilots;
+            }
+
+            if (destinations.Count==0)
+            {
+                ViewBag.DestinationIsNull = true;
+            }
+            else
+            {
+                ViewBag.DestinationIsNull = false;
+                ViewData["destinations"] = destinations;
+            }
             return PartialView("_VehiclePartial");
         }
         [HttpPost]
         public IActionResult Vehicle([FromForm] VehicleDto formData)
         {
             var model = formData;
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                return View("Error");
+            }
+
+            var vehicle = new Vehicle
+            {
+                Arrival = DateTime.Parse(model.Arrival),
+                Departure = DateTime.Parse(model.Departure),
+                Destination = _entityById.Destination(model.DestinationId),
+                DestinationId = model.DestinationId,
+                LaunchSite = model.LaunchSite,
+                Name = model.Model,
+                OnFLight = false,
+                Pilot = _entityById.Pilot(model.PilotId),
+                PilotId = model.PilotId,
+                Seats = model.Seats,
+                SerialNumber = model.SerialNumber,
+                Speed = model.Speed,
+            };
+            _context.Vehicles.Add(vehicle);
+            _context.SaveChanges();
+            return View("Index");
         }
 
         public IActionResult Pilot()
@@ -85,8 +131,18 @@ namespace Beyond.Controllers
         [HttpPost]
         public IActionResult Destination([FromForm] DestinationDto formData)
         {
-
-            return View("Index");
+            var model = formData;
+            var destination = new Destination
+            {
+                Name = model.Name,
+                Description = model.Description,
+                Distance = model.Distance,
+                Price = model.Price,
+                Url = model.Url
+            };
+            _context.Destinations.Add(destination);
+            _context.SaveChanges();
+            return Redirect("/Control");
         }
     }
 }

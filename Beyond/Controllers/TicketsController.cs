@@ -31,32 +31,36 @@ namespace Beyond.Controllers
         [Authorize]
         public IActionResult All()
         {
-            var destinations = _context
-                .Destinations
+            var vehicleFlights = _context
+                .Vehicles
                 .Select(x => new TicketViewModel()
                 {
-                    Description = x.Description,
+                    Description = x.Destination.Description,
                     Id = x.Id,
-                    Name = x.Name,
-                    Path = x.Url,
-                    Price = $"{x.Price}$"
-                }).ToList();
-            return View(destinations);
+                    Name = x.Destination.Name,
+                    Path = x.Destination.Url,
+                    Price = $"{x.Destination.Price}$",
+                    Date = x.Departure,
+                    TicketsLeft = x.Seats,
+                    LaunchSite = x.LaunchSite
+                    
+                })
+                .ToList();
+            return View(vehicleFlights);
         }
 
         [Authorize]
         public IActionResult MyTickets()
         {
-            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var currentUser = _context.Users.Include(host => host.Tickets).ToList();
-            var user = currentUser.FirstOrDefault(u=>u.Id==currentUserId);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
             if (user == null) return View("Error");
             {
-                var tickets = _context.Tickets
-                    .Where(x => x.UserId == currentUserId)
+                var tickets = user
+                    .Tickets
                     .Select(x => new MyTicketViewModel()
                     {
-                        Departure = x.Vehicle.Departure.ToLongDateString(),
+                        Departure = x.Vehicle.Departure,
                         Name = x.Vehicle.Destination.Name,
                         Price = x.Vehicle.Destination.Price,
                         SeatNumber = x.Vehicle.Seats.ToString(),
@@ -71,40 +75,31 @@ namespace Beyond.Controllers
         public IActionResult Buy(string id)
         {
             var user1 = _context.UserClaims.Select(x => x.UserId);
+
             var user = _context
                 .Users
                 .FirstOrDefault(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            var destination = _context
-                .Destinations
-                .FirstOrDefault(x => x.Id == id);
-            if (destination==null || user ==null)
-            {
-                return View("Error");
-            }
-
             var vehicle = _context
                 .Vehicles
-                .FirstOrDefault(x => x.Destination.Id==id);
+                .FirstOrDefault(x => x.Id == id);
 
             if (vehicle != null)
             {
                 var ticket = new Ticket
                 {
-                    Description = destination.Description,
-                    ImgPath = destination.Url,
+                    Description = vehicle.Destination.Description,
+                    ImgPath = vehicle.Destination.Url,
                     User = user,
-                    UserId = user.Id,
                     Vehicle = vehicle,
-                    VehicleId = vehicle.Id,
 
                 };
                 _context.Tickets.Add(ticket);
+                vehicle.Seats--;
             }
-
             _context.SaveChangesAsync();
 
-            var userTIckets=user.Tickets;
+            
 
             ViewData["id"] = id;
             return RedirectToAction("MyTickets");

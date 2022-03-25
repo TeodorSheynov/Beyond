@@ -13,20 +13,20 @@ namespace Beyond.Data.Models
         public string Name { get; set; }
         [Required]
         public int Speed { get; set; }
-        public Pilot Pilot { get; set; }
+        public virtual Pilot Pilot { get; set; }
         [ForeignKey(nameof(Pilot))]
         public string PilotId { get; set; }
         [Required]
         public string SerialNumber { get; set; }
         [Required]
         public int Seats { get; set; }
-        public Destination Destination { get; set; }
+        public virtual Destination Destination { get; set; }
         [ForeignKey(nameof(Destination))]
         public string DestinationId { get; set; }
 
         public DateTime Arrival { get; set; }
         public DateTime Departure { get; set; }
-        public ICollection<Ticket> Tickets { get; set; }
+        public virtual ICollection<Ticket> Tickets { get; set; }
         public string LaunchSite { get; set; }
         public bool OnFLight { get; set; }
     }

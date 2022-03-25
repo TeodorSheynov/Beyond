@@ -21,7 +21,7 @@ namespace Beyond.Data.Models
         public decimal Price { get; set; }
         [Required]
         public  string Url { get; set; }
-        public ICollection<Vehicle> Vehicles { get; set; } = new HashSet<Vehicle>();
+        public virtual ICollection<Vehicle> Vehicles { get; set; } = new HashSet<Vehicle>();
 
     }
 }

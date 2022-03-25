@@ -1,4 +1,6 @@
-﻿namespace Beyond.Models
+﻿using System;
+
+namespace Beyond.Models
 {
     public class TicketViewModel
     {
@@ -7,5 +9,8 @@
         public string Path { get; set; }
         public string Description { get; set; }
         public string Price { get; set; }
+        public DateTime Date { get; set; }
+        public int TicketsLeft { get; set; }
+        public string LaunchSite { get; set; }
     }
 }

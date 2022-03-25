@@ -16,9 +16,9 @@
             <tr>
                 <th class="th-cart">Product</th>
                 <th class="th-cart">Serial Number</th>
-                <th class="th-cart">Departure</th>
+                <th class="th-cart">Date</th>
+                <th class="th-cart">Time</th>
                 <th class="th-cart">Seat</th>
-                <th class="th-cart">Quantity</th>
                 <th class="th-cart">Price</th>
                 <th class="th-cancel">Cancel</th>
             </tr>
@@ -38,17 +38,17 @@
                         </td>
                         <td class="td-cart">
                             <div class="prodTotal cartSection">
-                                <p>@x.Departure</p>
+                                <p>@x.Departure.ToLongDateString()</p>
+                            </div>
+                        </td>
+                        <td class="td-cart">
+                            <div class="prodTotal cartSection">
+                                <p>@x.Departure.ToLongTimeString()</p>
                             </div>
                         </td>
                         <td class="td-cart">
                             <div class="prodTotal cartSection">
                                 <p>@x.SeatNumber</p>
-                            </div>
-                        </td>
-                        <td class="td-cart">
-                            <div class="prodTotal cartSection">
-                                <p>1</p>
                             </div>
                         </td>
                         <td class="td-cart">
