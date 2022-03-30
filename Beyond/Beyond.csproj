@@ -20,7 +20,8 @@
 
   <ItemGroup>
     <Folder Include="Data\Models\Enums\" />
-    <Folder Include="Models\Control\" />
+    <Folder Include="Models\Destination\" />
+    <Folder Include="Models\Crew\" />
     <Folder Include="wwwroot\img\tickets\" />
   </ItemGroup>
 

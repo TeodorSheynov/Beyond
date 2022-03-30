@@ -13,6 +13,12 @@
         <strong>Request ID:</strong> <code>@Model.RequestId</code>
     </p>
 }
+@{
+    foreach (var modelStateKey in ModelState.Keys)
+    {
+        <p>@modelStateKey --- @ModelState[$"{modelStateKey}"];</p>
+    }
+}
 
 <h3>Development Mode</h3>
 <p>

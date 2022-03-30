@@ -1,13 +1,19 @@
-﻿@using Beyond.Models.Control
+﻿@model Beyond.Models.DTOs.PilotDto
+@{
+
+}
 <div style="text-align: center; color: white;">
         <form id="MyForm" asp-action="Pilot" asp-controller="Control" method="post" style="display: inline-block; width: 100%; max-width: 500px;">
             <h2 class="login-header" style="text-align:center">Add Pilot</h2>
-            <label for="name">Name</label><br>
-            <input class="login-input" type="text" id="name" name="Name"><br>
-            <label for="age">Age</label><br>
-            <input class="login-input" type="text" id="age" name="Age"><br>
-            <label for="rank">Rank</label><br>
-            <select class="login-input" name="Rank" id="rank">
+            <label>Name</label><br>
+            <span asp-validation-for="Name" style="color: orangered"></span>
+            <input class="login-input" required="" type="text" id="name" asp-for="Name"><br>
+            <label >Age</label><br>
+            <span asp-validation-for="Age" style="color: orangered"></span>
+            <input class="login-input" required="" type="number" id="age" asp-for="Age"><br>
+            <label>Rank</label><br>
+            <span asp-validation-for="Rank" style="color: orangered"></span>
+            <select class="login-input" required="" asp-for="Rank" id="rank">
                 @{
                     foreach (var rank in ViewData["ranks"] as IList<PilotRanksViewModel>)
                     {
@@ -15,10 +21,12 @@
                     }
                 }
             </select><br>
-            <label for="description">Short Description</label><br>
-            <textarea class="login-input" type="text" id="description" name="Description"></textarea><br>
-            <label for="url">Picture Url</label><br>
-            <input  class="login-input" type="text" id="url" name="Url"><br>
+            <label>Short Description</label><br>
+            <span asp-validation-for="Description" style="color: orangered"></span>
+            <textarea class="login-input"type="text" id="description" asp-for="Description"></textarea><br>
+            <label>Picture Url</label><br>
+            <span asp-validation-for="Url" style="color: orangered"></span>
+            <input  class="login-input" required="" type="url" id="url" asp-for="Url"><br>
             <input class="login-button" type="submit" value="Create">
         </form>
     </div>

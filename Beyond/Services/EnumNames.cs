@@ -16,7 +16,7 @@ namespace Beyond.Services
                 var name = Enum.GetName(typeof(Rank), rankName);
                 var model= new PilotRanksViewModel()
                 {
-                    Name = StringDecorator(name),
+                    Name = UiRankDecorator(name),
                     Value = rankName
                 };
                 decoratedRanks.Add(model);
@@ -25,7 +25,7 @@ namespace Beyond.Services
             return decoratedRanks;
         }
 
-        private static string StringDecorator(string rank)
+        public string UiRankDecorator(string rank)
         {
             return rank switch
             {

@@ -11,6 +11,7 @@ using Beyond.Models.DTOs;
 using Beyond.Services;
 using Beyond.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Beyond.Controllers
 {
@@ -33,12 +34,12 @@ namespace Beyond.Controllers
 
             return View();
         }
-
+        
         public IActionResult Vehicle()
         {
             var destinations = _context
                 .Destinations
-                .Select(x => new DestinationsViewModel()
+                .Select(x => new ControlDestinationsViewModel()
                 {
                     Id = x.Id,
                     Name = x.Name,
@@ -111,17 +112,35 @@ namespace Beyond.Controllers
         public IActionResult Pilot([FromForm] PilotDto formData)
         {
             var model = formData;
-            var pilot = new Pilot()
+            if (ModelState.IsValid)
             {
-                Age = model.Age,
-                Description = model.Description,
-                ImgPath = model.Url,
-                Rank = model.Rank,
-                Name = model.Name
-            };
-            _context.Pilots.Add(pilot);
-            _context.SaveChanges();
-            return View("Index");
+                var pilot = new Pilot()
+                {
+                    Age = model.Age,
+                    Description = model.Description,
+                    ImgPath = model.Url,
+                    Rank = model.Rank,
+                    Name = model.Name
+                };
+                _context.Pilots.Add(pilot);
+                _context.SaveChanges();
+                return View("Index");
+            }
+
+            Dictionary<string, List<string>> errorsDictionary = new Dictionary<string, List<string>>();
+            foreach (var key in ModelState.Keys)
+            {
+                var value = ModelState[key];
+                errorsDictionary[key] = new List<string>();
+                foreach (var error in value.Errors)
+                {
+                    errorsDictionary[key].Add(error.ErrorMessage);
+                }
+                
+            }
+            ViewData["errors"]=errorsDictionary;
+            return View("Error",errorsDictionary);
+
         }
 
         public IActionResult Destination()

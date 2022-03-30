@@ -9,11 +9,10 @@
     <form method="post">
         <div class="row">
             <h2 class="login-header" style="text-align:center">Login</h2>
-            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="col">
-                <input asp-for="Input.Email" class="login-input" type="text" placeholder="Email">
+                <input asp-for="Input.Email" required="" class="login-input" type="text" placeholder="Email">
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
-                <input asp-for="Input.Password" class="login-input" type="password" placeholder="Password">
+                <input asp-for="Input.Password" required="" class="login-input" type="password" placeholder="Password">
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
                 <input class="login-button" type="submit" value="Login">
             </div>

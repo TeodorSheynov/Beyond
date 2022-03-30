@@ -1,5 +1,4 @@
-﻿@using System.Security.Cryptography
-@model IEnumerable<TicketViewModel>
+﻿@model IEnumerable<TicketViewModel>
 @section CSS{
     <link rel="stylesheet" href="~/css/tickets.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -27,7 +26,6 @@
                         <img class="ticket-img" src="@ticketViewModel.Path" alt="@ticketViewModel.Name" style="width: 100%">
                         <h1>@ticketViewModel.Name</h1>
                         <p class="price">@ticketViewModel.Price</p>
-                        <p>@ticketViewModel.Description</p>
                         <p>@ticketViewModel.Date</p>
                         <p>@ticketViewModel.LaunchSite</p>
                         <p><button class="ticket-button" onclick="window.location.href ='/Tickets/Buy?id=@ticketViewModel.Id'">Buy</button></p>

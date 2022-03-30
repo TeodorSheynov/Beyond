@@ -3,16 +3,16 @@
     var pilots = ViewData["pilots"];
     var destinations = ViewData["destinations"];
     <div style="text-align: center; color: white;">
-    <form id="MyForm" action="Control/Vehicle" method="post" style="display: inline-block; width: 100%; max-width: 500px;">
+    <form id="MyForm" asp-action="Vehicle" asp-controller="Control" method="post" style="display: inline-block; width: 100%; max-width: 500px;">
         <h2 class="login-header" style="text-align:center">Create Vehicle</h2>
-        <label for="name">Model</label><br>
-        <input class="login-input" type="text" id="name" name="Model"><br>
-        <label for="speed">Speed</label><br>
-        <input class="login-input" type="text" id="speed" name="Speed"><br>
-        <label for="pilot">Choose a pilot:</label><br>
+        <label>Model</label><br>
+        <input class="login-input" type="text" id="name" required="" name="Model"><br>
+        <label>Speed</label><br>
+        <input class="login-input" type="number" id="speed" name="Speed"><br>
+        <label>Choose a pilot:</label><br>
         @if(ViewBag.PilotIsNull)
         {
-            <select class="login-input" onchange="Redirect(this)">
+            <select required="" class="login-input" onchange="Redirect(this)">
             <option disabled selected value="default"> -- select an option -- </option>
             <option  value="Pilot">+ Add Pilot</option>
         </select><br>
@@ -28,29 +28,29 @@
                 }
             </select><br>
         }
-        <label for="serialNumber">Serial Number</label><br>
-        <input class="login-input" type="text" id="serialNumber" name="SerialNumber"><br>
-        <label for="seats">Seats</label><br>
-        <input class="login-input" type="text" id="seats" name="Seats"><br>
-        <label for="launchSite">Launch site</label><br>
-        <input class="login-input" type="text" id="launchSite" name="LaunchSite"><br>
-        <label for="departure">Departure</label><br>
-        <input class="login-input" type="datetime-local" id="departure" name="Departure"><br>
-        <label for="arrival">Arrival</label><br>
-        <input class="login-input" type="datetime-local" id="arrival" name="Arrival"><br>
-        <label for="destination">Destination</label><br>
+        <label>Serial Number</label><br>
+        <input class="login-input" type="text" id="serialNumber" required="required" name="SerialNumber"><br>
+        <label>Seats</label><br>
+        <input class="login-input" type="number" required="" id="seats" name="Seats"><br>
+        <label>Launch site</label><br>
+        <input class="login-input" required="" type="text" id="launchSite" name="LaunchSite"><br>
+        <label>Departure</label><br>
+        <input class="login-input" required="" type="datetime-local" id="departure" name="Departure"><br>
+        <label>Arrival</label><br>
+        <input class="login-input" required="" type="datetime-local" id="arrival" name="Arrival"><br>
+        <label>Destination</label><br>
         @if (ViewBag.DestinationIsNull)
         {
-            <select class="login-input" onchange="Redirect(this)">
+            <select required="" class="login-input" onchange="Redirect(this)">
                 <option disabled selected value="default"> -- select an option -- </option>
                 <option  value="Destination">+ Add Destination</option>
             </select><br>
         }
         else
         {
-            <select class="login-input" name="DestinationId" id="destination">
+            <select required="" class="login-input" name="DestinationId" id="destination">
                 @{
-                    foreach (var destination in (destinations as IList<DestinationsViewModel>)!)
+                    foreach (var destination in (destinations as IList<ControlDestinationsViewModel>)!)
                     {
                         <option name="destination" value="@destination.Id">@destination.Name</option>
                     }

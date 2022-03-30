@@ -35,7 +35,6 @@ namespace Beyond.Controllers
                 .Vehicles
                 .Select(x => new TicketViewModel()
                 {
-                    Description = x.Destination.Description,
                     Id = x.Id,
                     Name = x.Destination.Name,
                     Path = x.Destination.Url,
