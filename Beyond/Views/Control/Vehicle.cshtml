@@ -1,12 +1,20 @@
 ﻿@using Beyond.Models.Control
+@section CSS
+{
+    <link rel="stylesheet" href="/css/sideBar.css">
+}
 @{
     var pilots = ViewData["pilots"];
     var destinations = ViewData["destinations"];
-    <div style="text-align: center; color: white;">
+
+    <partial name="_ControlNavigationPartial"></partial>
+    <!-- Page content -->
+    <div id="panel-container" class="panel-content">
+       <div style="text-align: center; color: white;">
     <form id="MyForm" asp-action="Vehicle" asp-controller="Control" method="post" style="display: inline-block; width: 100%; max-width: 500px;">
         <h2 class="login-header" style="text-align:center">Create Vehicle</h2>
         <label>Model</label><br>
-        <input class="login-input" type="text" id="name" required="" name="Model"><br>
+        <input class="login-input" type="text" id="name" name="Model"><br>
         <label>Speed</label><br>
         <input class="login-input" type="number" id="speed" name="Speed"><br>
         <label>Choose a pilot:</label><br>
@@ -68,4 +76,7 @@
     </form>
   
 </div>
+    </div>
+
+    
 }

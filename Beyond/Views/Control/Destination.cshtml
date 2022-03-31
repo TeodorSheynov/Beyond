@@ -1,0 +1,27 @@
+﻿@using Beyond.Models.Control
+@section CSS
+{
+    <link rel="stylesheet" href="/css/sideBar.css">
+}
+
+<partial name="_ControlNavigationPartial"/>
+<div id="panel-container" class="panel-content">
+    <div style="text-align: center; color: white;">
+        <form id="MyForm" asp-action="Destination" asp-controller="Control" method="post" style="display: inline-block; width: 100%; max-width: 500px;">
+            <h2 class="login-header" style="text-align:center">Add Destination</h2>
+            <label>Name</label><br>
+            <input class="login-input" required="" type="text" id="name" name="Name"><br>
+            <label>Distance</label><br>
+            <input class="login-input" required="" type="number" id="distance" name="Distance"><br>
+            <label>Description</label><br>
+            <textarea class="login-input" required="" type="text-box" id="description" name="Description" rows="3"></textarea><br>
+            <label>Image Url</label><br>
+            <input class="login-input" required="" type="url" id="url" name="Url"><br>
+            <label>Price</label><br>
+            <input class="login-input" required="" type="number" id="price" name="Price"><br>
+       
+            <input class="login-button" type="submit" value="Add">
+        </form>
+    </div>
+</div>
+

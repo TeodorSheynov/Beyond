@@ -1,16 +1,11 @@
 ﻿@using Beyond.Models.Control
+@using Microsoft.AspNetCore.Mvc.RazorPages
 @section CSS
 {
     <link rel="stylesheet" href="/css/sideBar.css">
 }
 @{
-    <div class="sidenav">
-        <h1 style="padding: 16px; color: white">Add</h1>
-        <a class="side-menu" data-menu="Vehicle">Vehicle</a>
-        <a class="side-menu" data-menu="Pilot">Pilot</a>
-        <a class="side-menu" data-menu="Destination">Destination</a>
-    </div>
-
+    <partial name="_ControlNavigationPartial"></partial>
     <!-- Page content -->
     <div id="panel-container" class="panel-content">
         <h1 style="font-size: 30px; color: white; text-align: center; padding-top: 30vh;">Welcome Admin</h1>

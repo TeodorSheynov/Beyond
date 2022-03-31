@@ -70,7 +70,7 @@ namespace Beyond.Controllers
                 ViewBag.DestinationIsNull = false;
                 ViewData["destinations"] = destinations;
             }
-            return PartialView("_VehiclePartial");
+            return View();
         }
         [HttpPost]
         public IActionResult Vehicle([FromForm] VehicleDto formData)
@@ -78,7 +78,8 @@ namespace Beyond.Controllers
             var model = formData;
             if (!ModelState.IsValid)
             {
-                return View("Error");
+             
+                return View(formData);
             }
 
             var vehicle = new Vehicle
@@ -106,7 +107,7 @@ namespace Beyond.Controllers
             var ranks= _enumValues.EnumRankNames();
            
             ViewData["ranks"] = ranks;
-            return PartialView("_PilotPartial");
+            return View();
         }
         [HttpPost]
         public IActionResult Pilot([FromForm] PilotDto formData)
@@ -126,20 +127,10 @@ namespace Beyond.Controllers
                 _context.SaveChanges();
                 return View("Index");
             }
+            var ranks = _enumValues.EnumRankNames();
 
-            Dictionary<string, List<string>> errorsDictionary = new Dictionary<string, List<string>>();
-            foreach (var key in ModelState.Keys)
-            {
-                var value = ModelState[key];
-                errorsDictionary[key] = new List<string>();
-                foreach (var error in value.Errors)
-                {
-                    errorsDictionary[key].Add(error.ErrorMessage);
-                }
-                
-            }
-            ViewData["errors"]=errorsDictionary;
-            return View("Error",errorsDictionary);
+            ViewData["ranks"] = ranks;
+            return View(formData);
 
         }
 
