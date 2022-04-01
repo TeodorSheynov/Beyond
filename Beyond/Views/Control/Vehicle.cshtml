@@ -1,11 +1,11 @@
-﻿@using Beyond.Models.Control
+﻿@model Beyond.Models.DTOs.VehicleDto
 @section CSS
 {
     <link rel="stylesheet" href="/css/sideBar.css">
 }
 @{
-    var pilots = ViewData["pilots"];
-    var destinations = ViewData["destinations"];
+    var pilots = ViewBag.Pilots;
+    var destinations = ViewBag.Destinations;
 
     <partial name="_ControlNavigationPartial"></partial>
     <!-- Page content -->
@@ -13,23 +13,26 @@
        <div style="text-align: center; color: white;">
     <form id="MyForm" asp-action="Vehicle" asp-controller="Control" method="post" style="display: inline-block; width: 100%; max-width: 500px;">
         <h2 class="login-header" style="text-align:center">Create Vehicle</h2>
-        <label>Model</label><br>
-        <input class="login-input" type="text" id="name" name="Model"><br>
+        <label>Name</label><br>
+        <span asp-validation-for="Name" style="color: orangered"></span>
+        <input class="login-input" type="text" id="name" asp-for="Name"><br>
         <label>Speed</label><br>
-        <input class="login-input" type="number" id="speed" name="Speed"><br>
+        <span asp-validation-for="Speed" style="color: orangered"></span>
+        <input class="login-input" type="number" id="speed" asp-for="Speed"><br>
         <label>Choose a pilot:</label><br>
-        @if(ViewBag.PilotIsNull)
+        <span asp-validation-for="PilotId" style="color: orangered"></span>
+        @if(pilots==null)
         {
-            <select required="" class="login-input" onchange="Redirect(this)">
+            <select required="" class="login-input" asp-for="PilotId" onchange="Redirect(this)">
             <option disabled selected value="default"> -- select an option -- </option>
             <option  value="Pilot">+ Add Pilot</option>
         </select><br>
         }
         else
         {
-            <select class="login-input" name="PilotId" id="pilot">
+            <select class="login-input" asp-for="PilotId" id="pilot">
                 @{
-                    foreach (var pilot in ((IList<ControlPilotsViewModel>) pilots)!)
+                    foreach (var pilot in (IList<ControlPilotsViewModel>) pilots)
                     {
                         <option name="pilot" value="@pilot.Id">@pilot.Name</option>
                     }
@@ -37,28 +40,34 @@
             </select><br>
         }
         <label>Serial Number</label><br>
-        <input class="login-input" type="text" id="serialNumber" required="required" name="SerialNumber"><br>
+        <span asp-validation-for="SerialNumber" style="color: orangered"></span>
+        <input class="login-input" type="text" id="serialNumber" required="required" asp-for="SerialNumber"><br>
         <label>Seats</label><br>
-        <input class="login-input" type="number" required="" id="seats" name="Seats"><br>
+        <span asp-validation-for="Seats" style="color: orangered"></span>
+        <input class="login-input" type="number" required="" id="seats" asp-for="Seats"><br>
         <label>Launch site</label><br>
-        <input class="login-input" required="" type="text" id="launchSite" name="LaunchSite"><br>
+        <span asp-validation-for="LaunchSite" style="color: orangered"></span>
+        <input class="login-input" required="" type="text" id="launchSite" asp-for="LaunchSite"><br>
         <label>Departure</label><br>
-        <input class="login-input" required="" type="datetime-local" id="departure" name="Departure"><br>
+        <span asp-validation-for="Departure" style="color: orangered"></span>
+        <input class="login-input" required="" type="datetime-local" id="departure" asp-for="Departure"><br>
         <label>Arrival</label><br>
-        <input class="login-input" required="" type="datetime-local" id="arrival" name="Arrival"><br>
+        <span asp-validation-for="Arrival" style="color: orangered"></span>
+        <input class="login-input" required="" type="datetime-local" id="arrival" asp-for="Arrival"><br>
         <label>Destination</label><br>
-        @if (ViewBag.DestinationIsNull)
+        <span asp-validation-for="DestinationId" style="color: orangered"></span>
+        @if (destinations==null)
         {
-            <select required="" class="login-input" onchange="Redirect(this)">
+            <select asp-for="DestinationId" required="" class="login-input" onchange="Redirect(this)">
                 <option disabled selected value="default"> -- select an option -- </option>
                 <option  value="Destination">+ Add Destination</option>
             </select><br>
         }
         else
         {
-            <select required="" class="login-input" name="DestinationId" id="destination">
+            <select required="" class="login-input" asp-for="DestinationId" id="destination">
                 @{
-                    foreach (var destination in (destinations as IList<ControlDestinationsViewModel>)!)
+                    foreach (var destination in (IList<ControlDestinationsViewModel>) destinations)
                     {
                         <option name="destination" value="@destination.Id">@destination.Name</option>
                     }
@@ -67,16 +76,13 @@
         }
       
         <input class="login-button" type="submit" value="Create">
-        <script type="text/javascript">
-            function Redirect(element) {
 
-                window.$("#panel-container").load(`/Control/${element.value}`);
-            }
-        </script>
     </form>
-  
-</div>
+           <script type="text/javascript">
+               function Redirect(element) {
+                   window.location.href=`/Control/${element.value}`;
+               }
+           </script>
+        </div>
     </div>
-
-    
 }

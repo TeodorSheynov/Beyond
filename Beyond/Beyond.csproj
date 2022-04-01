@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Models\Enums\" />
+    <Folder Include="Helpers\Validation\Attributes\" />
     <Folder Include="Models\Destination\" />
     <Folder Include="Models\Crew\" />
     <Folder Include="wwwroot\img\tickets\" />

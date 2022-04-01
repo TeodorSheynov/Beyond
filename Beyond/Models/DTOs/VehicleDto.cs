@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using Beyond.Helpers.Validation.Attributes;
 
 namespace Beyond.Models.DTOs
 {
@@ -7,7 +9,7 @@ namespace Beyond.Models.DTOs
     {
 
         [Required]
-        public string Model { get; set; }
+        public string Name { get; set; }
         [Required]
         public int Speed { get; set; }
         [Required]
@@ -18,11 +20,10 @@ namespace Beyond.Models.DTOs
         [Required]
         public int Seats { get; set; }
         [Required]
-        [DataType(DataType.DateTime)]
-        public string Departure { get; set; }
+        public DateTime Departure { get; set; }
         [Required]
-        [DataType(DataType.DateTime)]
-        public string Arrival { get; set; }
+        [DateLessThan(nameof(Departure),ErrorMessage = "Arrive date can't be less than departure date")]
+        public DateTime Arrival { get; set; }
         [Required]
         public string DestinationId { get; set; }
         [Required]

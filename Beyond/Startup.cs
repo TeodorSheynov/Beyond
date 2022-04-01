@@ -1,12 +1,12 @@
 
 
-using Beyond.Data.Models;
+
 using Beyond.Data;
+using Beyond.Data.Models;
 using Beyond.Services;
 using Beyond.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -51,6 +51,8 @@ namespace Beyond
             services.AddControllersWithViews();
             services.AddScoped<IEnumNames, EnumNames>();
             services.AddScoped<ITakeEntityById, TakeEntityById>();
+            services.AddScoped<ITakeEntities, TakeEntities>();
+            services.AddScoped<ICreateAndSaveEntity, CreateAndSaveEntity>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)
