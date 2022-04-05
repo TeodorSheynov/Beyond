@@ -7,15 +7,16 @@
         }
         foreach (var destination in Model)
         {
-            <div class="main-home-container">
-               
-                <img src="@destination.Url" width="100%" height="450px" style="object-fit: contain;"frameborder="0">
-                <div class="text-block">
-                    <h4>@destination.Name</h4>
-                    <p>@destination.Description</p>
+            <a asp-controller="Tickets" asp-action="Search" asp-route-id="@destination.Id">
+                <div class="main-home-container">
+
+                    <img src="@destination.Url" width="100%" height="450px" style="object-fit: contain;" frameborder="0">
+                    <div class="text-block">
+                        <h4>@destination.Name</h4>
+                        <p>@destination.Description</p>
+                    </div>
                 </div>
-                <a href="/Tickets/All?Id=@destination.Id">Ticket</a>
-            </div>
+            </a>
         }
     }
 </div>

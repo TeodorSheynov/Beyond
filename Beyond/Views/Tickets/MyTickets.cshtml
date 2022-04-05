@@ -9,7 +9,7 @@
     <h1 class="projTitle">Beyond The Shopping Cart</h1>
     <div class="heading cf">
         <h1>My Cart</h1>
-        <a href="#" class="continue">Continue Shopping</a>
+        <a asp-action="All" asp-controller="Tickets" class="continue">Continue Shopping</a>
     </div>
     <div class="cart">
         <table style="width: 100%;">
@@ -58,7 +58,7 @@
                         </td>
                         <td class="td-cancel">
                             <div class="cartSection removeWrap">
-                                <a href="#" class="remove">x</a>
+                                <a asp-action="Delete" asp-route-id="@x.Id" asp-controller="Tickets" class="remove">x</a>
                             </div>
                         </td>
                     </tr>
@@ -66,13 +66,6 @@
             }
            
         </table>
-    </div>
-
-    <div class="subtotal cf">
-        <ul style="list-style-type: none;">
-            <li class="totalRow final"><span class="label">Total</span><span class="value">$44.00</span></li>
-            <li class="totalRow"><a href="#" class="btn continue">Checkout</a></li>
-        </ul>
     </div>
 </div>
 @section Scripts

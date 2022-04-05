@@ -48,7 +48,7 @@
 }
 
 /* Style the search field */
-form.example input[type=text] {
+div.example input[type=text] {
     padding: 10px;
     font-size: 17px;
     border: 1px solid grey;
@@ -58,7 +58,7 @@ form.example input[type=text] {
 }
 
 /* Style the submit button */
-form.example button {
+div.example button {
     float: left;
     width: 20%;
     max-width: 60px;
@@ -71,12 +71,12 @@ form.example button {
     cursor: pointer;
 }
 
-form.example button:hover {
+div.example button:hover {
     background: #0b7dda;
 }
 
 /* Clear floats */
-form.example::after {
+div.example::after {
     content: "";
     clear: both;
     display: table;

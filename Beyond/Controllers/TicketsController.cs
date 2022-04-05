@@ -47,6 +47,26 @@ namespace Beyond.Controllers
                 .ToList();
             return View(vehicleFlights);
         }
+        [Authorize]
+        public IActionResult Search(string id)
+        {
+            var vehicleFlights = _context
+                .Vehicles
+                .Where(v=>v.Destination.Id==id)
+                .Select(x => new TicketViewModel()
+                {
+                    Id = x.Id,
+                    Name = x.Destination.Name,
+                    Path = x.Destination.Url,
+                    Price = $"{x.Destination.Price}$",
+                    Date = x.Departure,
+                    TicketsLeft = x.Seats,
+                    LaunchSite = x.LaunchSite
+
+                })
+                .ToList();
+            return View("All",vehicleFlights);
+        }
 
         [Authorize]
         public IActionResult MyTickets()
@@ -59,6 +79,7 @@ namespace Beyond.Controllers
                     .Tickets
                     .Select(x => new MyTicketViewModel()
                     {
+                        Id = x.Id,
                         Departure = x.Vehicle.Departure,
                         Name = x.Vehicle.Destination.Name,
                         Price = x.Vehicle.Destination.Price,
@@ -73,8 +94,6 @@ namespace Beyond.Controllers
         [Authorize]
         public IActionResult Buy(string id)
         {
-            var user1 = _context.UserClaims.Select(x => x.UserId);
-
             var user = _context
                 .Users
                 .FirstOrDefault(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -101,6 +120,17 @@ namespace Beyond.Controllers
             
 
             ViewData["id"] = id;
+            return RedirectToAction("MyTickets");
+        }
+        public IActionResult Delete(string id)
+        {
+            var ticketToDelete = _context
+                .Tickets
+                .FirstOrDefault(t => t.Id == id);
+            if (ticketToDelete == null) return View("Error");  
+            _context.Tickets.Remove(ticketToDelete);
+            _context.SaveChanges();
+
             return RedirectToAction("MyTickets");
         }
     }

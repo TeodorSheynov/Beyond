@@ -7,10 +7,10 @@
 @{
     
     <div class="search-bar">
-        <form class="example" action="action_page.php">
-            <input type="text" placeholder="Search.." name="search">
-            <button type="submit"><i class="fa fa-search"></i></button>
-        </form>
+        <div class="example" >
+            <input id="search" type="text" placeholder="Search.." name="search">
+            <button type="button" onclick="Search()"><i class="fa fa-search"></i></button>
+        </div>
     </div>
     <div class="tickets-container">
         @{
@@ -36,4 +36,7 @@
             
         }
     </div>
+    @section Scripts{
+        <script src="/js/search.js"></script>
+    }
 }
