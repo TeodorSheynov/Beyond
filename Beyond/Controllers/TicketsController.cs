@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Security.Claims;
-
+using System.Threading.Tasks;
 using Beyond.Data;
 using Beyond.Data.Models;
 using Beyond.Models;
@@ -40,7 +40,7 @@ namespace Beyond.Controllers
                     Path = x.Destination.Url,
                     Price = $"{x.Destination.Price}$",
                     Date = x.Departure,
-                    TicketsLeft = x.Seats,
+                    TicketsLeft = x.Seats.Count(s=>s.IsTaken==false),
                     LaunchSite = x.LaunchSite
                     
                 })
@@ -60,7 +60,7 @@ namespace Beyond.Controllers
                     Path = x.Destination.Url,
                     Price = $"{x.Destination.Price}$",
                     Date = x.Departure,
-                    TicketsLeft = x.Seats,
+                    TicketsLeft = x.Seats.Count(s=>s.IsTaken==false),
                     LaunchSite = x.LaunchSite
 
                 })
@@ -83,7 +83,7 @@ namespace Beyond.Controllers
                         Departure = x.Vehicle.Departure,
                         Name = x.Vehicle.Destination.Name,
                         Price = x.Vehicle.Destination.Price,
-                        SeatNumber = x.Vehicle.Seats.ToString(),
+                        SeatNumber = x.Seat.ToString(),
                         SerialNumber = x.Vehicle.SerialNumber
                     });
                 return View(tickets);
@@ -92,7 +92,7 @@ namespace Beyond.Controllers
         }
 
         [Authorize]
-        public IActionResult Buy(string id)
+        public async Task<IActionResult> Buy(string id)
         {
             var user = _context
                 .Users
@@ -104,32 +104,40 @@ namespace Beyond.Controllers
 
             if (vehicle != null)
             {
+                var seat = vehicle.Seats.FirstOrDefault(x => x.IsTaken == false);
+                if (seat == null) return View("Error");
+                vehicle.Seats.FirstOrDefault(s => s.Id == seat.Id)!.IsTaken = true;
                 var ticket = new Ticket
                 {
                     Description = vehicle.Destination.Description,
                     ImgPath = vehicle.Destination.Url,
                     User = user,
                     Vehicle = vehicle,
-
-                };
-                _context.Tickets.Add(ticket);
-                vehicle.Seats--;
+                    Seat = seat.SeatNumber
+                }; 
+                _context.Vehicles.Update(vehicle);
+                await _context.Tickets.AddAsync(ticket);
+                
+            
             }
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             
 
             ViewData["id"] = id;
             return RedirectToAction("MyTickets");
         }
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
             var ticketToDelete = _context
                 .Tickets
                 .FirstOrDefault(t => t.Id == id);
-            if (ticketToDelete == null) return View("Error");  
+            if (ticketToDelete == null) return View("Error");
+            var vehicle = ticketToDelete.Vehicle;
+            vehicle.Seats.First(s => s.SeatNumber == ticketToDelete.Seat).IsTaken=false;
             _context.Tickets.Remove(ticketToDelete);
-            _context.SaveChanges();
+            _context.Vehicles.Update(vehicle);
+           await _context.SaveChangesAsync();
 
             return RedirectToAction("MyTickets");
         }

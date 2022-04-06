@@ -28,7 +28,14 @@
                         <p class="price">@ticketViewModel.Price</p>
                         <p>@ticketViewModel.Date</p>
                         <p>@ticketViewModel.LaunchSite</p>
+                        @if(@ticketViewModel.TicketsLeft!=0)
+                        {
                         <p><button class="ticket-button" onclick="window.location.href ='/Tickets/Buy?id=@ticketViewModel.Id'">Buy</button></p>
+                        }else
+                        {
+                        <p><button type="button" class="ticket-button ticket-button-disabled" style="" disabled onclick="window.location.href ='/Tickets/Buy?id=@ticketViewModel.Id'">Sold out!</button></p>
+                        }
+                        
                         <p>tickets left : @ticketViewModel.TicketsLeft</p>
                     </div>
                 } 

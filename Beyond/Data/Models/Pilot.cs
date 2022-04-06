@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Beyond.Data.Models.Enums;
 
 namespace Beyond.Data.Models
@@ -17,6 +18,9 @@ namespace Beyond.Data.Models
         public Rank Rank { get; set; }
         [Required]
         public string ImgPath { get; set; }
+        [ForeignKey(nameof(Vehicle))]
+        public string VehicleId { get; set; }
+        public virtual Vehicle Vehicle { get; set; }
 
     }
 }

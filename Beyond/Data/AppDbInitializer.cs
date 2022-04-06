@@ -11,12 +11,27 @@ namespace Beyond.Data
 {
     public class AppDbInitializer
     {
+        private static List<Seat> SeedSeats(int count)
+        {
+            var seats = new List<Seat>();
+            for (int i = 1; i <= count; i++)
+            {
+                seats.Add(new Seat()
+                {
+                    IsTaken = false,
+                    SeatNumber = i
+                });
+            }
+
+            return seats;
+        }
         public static void Seed(IApplicationBuilder applicationBuilder)
         {
             using var serviceScope=applicationBuilder.ApplicationServices.CreateScope();
             var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
             context.Database.Migrate();
-
+            var seatsVehicleOne = 7;
+            var seatsVehicleTwo = 4;
             if (!context.Pilots.Any())
             {
                 context.Pilots.AddRange(new List<Pilot>()
@@ -105,7 +120,7 @@ namespace Beyond.Data
                     Speed = 4560,
                     PilotId = "1",
                     SerialNumber = "SN15",
-                    Seats = 6,
+                    Seats = SeedSeats(seatsVehicleOne),
                     Departure = DateTime.Parse("06/29/2022 05:50:06"),
                     Arrival = DateTime.Parse("12/29/2022 05:50:06"),
                     DestinationId = "1",
@@ -117,7 +132,7 @@ namespace Beyond.Data
                     Speed = 3500,
                     PilotId = "3",
                     SerialNumber = "S2316",
-                    Seats =4,
+                    Seats =SeedSeats(seatsVehicleTwo),
                     Departure = DateTime.Parse("07/15/2022 05:50:06"),
                     Arrival = DateTime.Parse("08/29/2022 05:50:06"),
                     DestinationId = "2"

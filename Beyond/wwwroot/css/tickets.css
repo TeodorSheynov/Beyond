@@ -25,10 +25,16 @@
     font-size: 18px;
 }
 
-    .ticket-button:hover {
-        opacity: 0.7;
-        background-color: #4df6b9;
-    }
+.ticket-button-disabled {
+    pointer-events: none;
+    background-color: #555;
+
+}
+
+.ticket-button:hover {
+    opacity: 0.7;
+    background-color: #4df6b9;
+}
 
 .tickets-container {
     width: -webkit-fill-available;

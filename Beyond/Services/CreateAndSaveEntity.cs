@@ -1,4 +1,5 @@
-﻿using Beyond.Data;
+﻿using System.Collections.Generic;
+using Beyond.Data;
 using Beyond.Data.Models;
 using Beyond.Models.DTOs;
 using Beyond.Services.Interfaces;
@@ -16,6 +17,19 @@ namespace Beyond.Services
         }
         public void Vehicle(VehicleDto dto)
         {
+            var seats = new List<Seat>();
+            
+            for (var i = 1; i <= dto.Seats; i++)
+            {
+                var seat=new Seat()
+                {
+                    IsTaken = false,
+                    SeatNumber = i
+                };
+                seats.Add(seat);
+            }
+
+            var pilot = _takeEntityById.Pilot(dto.PilotId);
             var vehicle = new Vehicle
             {
                 Arrival = dto.Arrival,
@@ -25,12 +39,14 @@ namespace Beyond.Services
                 LaunchSite = dto.LaunchSite,
                 Name = dto.Name,
                 OnFLight = false,
-                Pilot = _takeEntityById.Pilot(dto.PilotId),
+                Pilot = pilot,
                 PilotId = dto.PilotId,
-                Seats = dto.Seats,
+                Seats = seats,
                 SerialNumber = dto.SerialNumber,
                 Speed = dto.Speed,
             };
+            pilot.Vehicle= vehicle;
+            _context.Update(pilot);
             _context.Vehicles.Add(vehicle);
             _context.SaveChanges();
         }

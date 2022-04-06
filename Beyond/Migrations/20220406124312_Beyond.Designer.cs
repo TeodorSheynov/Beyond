@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Beyond.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220325122838_Beyond")]
+    [Migration("20220406124312_Beyond")]
     partial class Beyond
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,9 +72,35 @@ namespace Beyond.Migrations
                     b.Property<int>("Rank")
                         .HasColumnType("int");
 
+                    b.Property<string>("VehicleId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("VehicleId");
+
                     b.ToTable("Pilots");
+                });
+
+            modelBuilder.Entity("Beyond.Data.Models.Seat", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsTaken")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("SeatNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VehicleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("Seats");
                 });
 
             modelBuilder.Entity("Beyond.Data.Models.Ticket", b =>
@@ -89,6 +115,9 @@ namespace Beyond.Migrations
                     b.Property<string>("ImgPath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Seat")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -182,6 +211,7 @@ namespace Beyond.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DestinationId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LaunchSite")
@@ -196,9 +226,6 @@ namespace Beyond.Migrations
 
                     b.Property<string>("PilotId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Seats")
-                        .HasColumnType("int");
 
                     b.Property<string>("SerialNumber")
                         .IsRequired()
@@ -351,6 +378,22 @@ namespace Beyond.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Beyond.Data.Models.Pilot", b =>
+                {
+                    b.HasOne("Beyond.Data.Models.Vehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("VehicleId");
+
+                    b.Navigation("Vehicle");
+                });
+
+            modelBuilder.Entity("Beyond.Data.Models.Seat", b =>
+                {
+                    b.HasOne("Beyond.Data.Models.Vehicle", null)
+                        .WithMany("Seats")
+                        .HasForeignKey("VehicleId");
+                });
+
             modelBuilder.Entity("Beyond.Data.Models.Ticket", b =>
                 {
                     b.HasOne("Beyond.Data.Models.User", "User")
@@ -370,7 +413,9 @@ namespace Beyond.Migrations
                 {
                     b.HasOne("Beyond.Data.Models.Destination", "Destination")
                         .WithMany("Vehicles")
-                        .HasForeignKey("DestinationId");
+                        .HasForeignKey("DestinationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Beyond.Data.Models.Pilot", "Pilot")
                         .WithMany()
@@ -444,6 +489,8 @@ namespace Beyond.Migrations
 
             modelBuilder.Entity("Beyond.Data.Models.Vehicle", b =>
                 {
+                    b.Navigation("Seats");
+
                     b.Navigation("Tickets");
                 });
 #pragma warning restore 612, 618

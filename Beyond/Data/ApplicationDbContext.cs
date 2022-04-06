@@ -10,6 +10,7 @@ namespace Beyond.Data
             : base(options)
         {
         }
+        public DbSet<Seat> Seats { get; set; }
         public DbSet<Pilot> Pilots { get; set; }
         public DbSet<Destination> Destinations { get; set; }
         public DbSet<Ticket> Tickets { get; set; }

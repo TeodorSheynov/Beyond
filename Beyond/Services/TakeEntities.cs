@@ -17,6 +17,7 @@ namespace Beyond.Services
         {
             var pilots = _context
                 .Pilots
+                .Where(p=>p.Vehicle==null)
                 .Select(x => new ControlPilotsViewModel()
                 {
                     Id = x.Id,

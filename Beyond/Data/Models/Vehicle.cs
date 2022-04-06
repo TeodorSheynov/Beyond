@@ -19,7 +19,8 @@ namespace Beyond.Data.Models
         [Required]
         public string SerialNumber { get; set; }
         [Required]
-        public int Seats { get; set; }
+        public virtual ICollection<Seat> Seats { get; set; } = new HashSet<Seat>();
+        [Required]
         public virtual Destination Destination { get; set; }
         [ForeignKey(nameof(Destination))]
         public string DestinationId { get; set; }

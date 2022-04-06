@@ -22,7 +22,8 @@ namespace Beyond.Data.Models
         public virtual Vehicle Vehicle { get; set; }
         [ForeignKey(nameof(Vehicle))]
         public string VehicleId { get; set; }
-        
+
+        public int Seat { get; set; }
 
     }
 }

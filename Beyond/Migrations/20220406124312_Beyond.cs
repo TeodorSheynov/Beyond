@@ -63,22 +63,6 @@ namespace Beyond.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Pilots",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Age = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Rank = table.Column<int>(type: "int", nullable: false),
-                    ImgPath = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Pilots", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -185,6 +169,28 @@ namespace Beyond.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tickets",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ImgPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VehicleId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Seat = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tickets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tickets_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Vehicles",
                 columns: table => new
                 {
@@ -193,8 +199,7 @@ namespace Beyond.Migrations
                     Speed = table.Column<int>(type: "int", nullable: false),
                     PilotId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     SerialNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Seats = table.Column<int>(type: "int", nullable: false),
-                    DestinationId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DestinationId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Arrival = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Departure = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LaunchSite = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -208,36 +213,46 @@ namespace Beyond.Migrations
                         column: x => x.DestinationId,
                         principalTable: "Destinations",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Vehicles_Pilots_PilotId",
-                        column: x => x.PilotId,
-                        principalTable: "Pilots",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tickets",
+                name: "Pilots",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Age = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Rank = table.Column<int>(type: "int", nullable: false),
                     ImgPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     VehicleId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tickets", x => x.Id);
+                    table.PrimaryKey("PK_Pilots", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tickets_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_Pilots_Vehicles_VehicleId",
+                        column: x => x.VehicleId,
+                        principalTable: "Vehicles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Seats",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SeatNumber = table.Column<int>(type: "int", nullable: false),
+                    IsTaken = table.Column<bool>(type: "bit", nullable: false),
+                    VehicleId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Seats", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tickets_Vehicles_VehicleId",
+                        name: "FK_Seats_Vehicles_VehicleId",
                         column: x => x.VehicleId,
                         principalTable: "Vehicles",
                         principalColumn: "Id",
@@ -284,6 +299,16 @@ namespace Beyond.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Pilots_VehicleId",
+                table: "Pilots",
+                column: "VehicleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Seats_VehicleId",
+                table: "Seats",
+                column: "VehicleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tickets_UserId",
                 table: "Tickets",
                 column: "UserId");
@@ -302,10 +327,30 @@ namespace Beyond.Migrations
                 name: "IX_Vehicles_PilotId",
                 table: "Vehicles",
                 column: "PilotId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Tickets_Vehicles_VehicleId",
+                table: "Tickets",
+                column: "VehicleId",
+                principalTable: "Vehicles",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Vehicles_Pilots_PilotId",
+                table: "Vehicles",
+                column: "PilotId",
+                principalTable: "Pilots",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Pilots_Vehicles_VehicleId",
+                table: "Pilots");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -320,6 +365,9 @@ namespace Beyond.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Seats");
 
             migrationBuilder.DropTable(
                 name: "Tickets");
