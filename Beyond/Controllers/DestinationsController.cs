@@ -1,6 +1,5 @@
-﻿using System.Linq;
-using Beyond.Data;
-using Beyond.Models.Destination;
+﻿using Beyond.Data;
+using Beyond.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
@@ -8,25 +7,24 @@ namespace Beyond.Controllers
 {
     public class DestinationsController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        public DestinationsController(ApplicationDbContext context)
+        private readonly ITakeViewModels _takeViewModels;
+        public DestinationsController(ITakeViewModels takeViewModels)
         {
-            _context = context;
+            _takeViewModels = takeViewModels;
         }
         [Authorize]
         [Route("/Destinations")]
         public IActionResult Destinations()
         {
-            var destinations = _context
-                .Destinations
-                .Select(x => new DestinationViewModel()
-                {
-                    Description = x.Description,
-                    Id = x.Id,
-                    Name = x.Name,
-                    Url = x.Url
-                }).ToList();
-            return View(destinations);
+            var destinations = _takeViewModels.DestinationsOrNull();
+            switch (destinations)
+            {
+                case null:
+                    ViewData["Message"] = "There are no destinations.";
+                    return View("Error");
+                default:
+                    return View(destinations);
+            }
         }
     }
 }

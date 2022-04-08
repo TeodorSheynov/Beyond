@@ -1,37 +1,32 @@
-﻿using System.Linq;
-using Beyond.Data;
-using Beyond.Models.Crew;
-using Beyond.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+﻿using Beyond.Services.Interfaces;
+
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace Beyond.Controllers
 {
     public class CrewController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IEnumNames _enumNames;
-
-        public CrewController(ApplicationDbContext context, IEnumNames enumNames)
+        private readonly ITakeViewModels _takeViewModels;
+        public CrewController(ITakeViewModels takeViewModels)
         {
-            _context = context;
-            _enumNames = enumNames;
+            _takeViewModels = takeViewModels;
         }
 
         [Route("/Crew")]
         [Authorize]
         public IActionResult Crew()
         {
-            var crew = _context
-                .Pilots
-                .Select(x => new CrewViewModel()
-                {
-                    Description = x.Description,
-                    Name = x.Name,
-                    Rank = _enumNames.UiRankDecorator(x.Rank.ToString()),
-                    Url = x.ImgPath
-                }).ToList();
-            return View(crew);
+            var crew = _takeViewModels.CrewMembersOrNull();
+            switch (crew)
+            {
+                case null:
+                    ViewData["Message"]="There are no crew members.";
+                    return View("Error");
+                default:
+                    return View(crew);
+            }
         }
     }
 }

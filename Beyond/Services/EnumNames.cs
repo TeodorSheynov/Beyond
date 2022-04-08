@@ -8,7 +8,7 @@ namespace Beyond.Services
 {
     public class EnumNames : IEnumNames
     {
-        public List<PilotRanksViewModel> EnumRankNames()
+        public List<PilotRanksViewModel> PilotRankNames()
         {
             var decoratedRanks=new List<PilotRanksViewModel>();
             foreach (int rankName in Enum.GetValues(typeof(Rank)))

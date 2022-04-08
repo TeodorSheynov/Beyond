@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+
 using Beyond.Data;
+using Beyond.Data.DTOs;
 using Beyond.Data.Models;
-using Beyond.Models.DTOs;
 using Beyond.Services.Interfaces;
 
 namespace Beyond.Services
@@ -10,26 +12,17 @@ namespace Beyond.Services
     {
         private readonly ITakeEntityById _takeEntityById;
         private readonly ApplicationDbContext _context;
-        public CreateAndSaveEntity(ITakeEntityById takeEntityById, ApplicationDbContext context)
+        private readonly IGenerate _generate;
+        public CreateAndSaveEntity(ITakeEntityById takeEntityById, ApplicationDbContext context, IGenerate generate)
         {
             _takeEntityById = takeEntityById;
             _context = context;
+            _generate = generate;
         }
         public void Vehicle(VehicleDto dto)
         {
-            var seats = new List<Seat>();
-            
-            for (var i = 1; i <= dto.Seats; i++)
-            {
-                var seat=new Seat()
-                {
-                    IsTaken = false,
-                    SeatNumber = i
-                };
-                seats.Add(seat);
-            }
-
             var pilot = _takeEntityById.Pilot(dto.PilotId);
+            var seats = _generate.Seats(dto.Seats);
             var vehicle = new Vehicle
             {
                 Arrival = dto.Arrival,
@@ -51,7 +44,7 @@ namespace Beyond.Services
             _context.SaveChanges();
         }
 
-        public void Destination(DestinationDto dto)
+        public  void Destination(DestinationDto dto)
         {
             var destination = new Destination
             {
@@ -61,11 +54,11 @@ namespace Beyond.Services
                 Price = dto.Price,
                 Url = dto.Url
             };
-            _context.Destinations.Add(destination);
-            _context.SaveChanges();
+             _context.Destinations.Add(destination);
+              _context.SaveChanges();
         }
 
-        public void Pilot(PilotDto dto)
+        public  void Pilot(PilotDto dto)
         {
             var pilot = new Pilot()
             {
@@ -76,6 +69,24 @@ namespace Beyond.Services
                 Name = dto.Name
             };
             _context.Pilots.Add(pilot);
+            _context.SaveChanges();
+        }
+
+        public void Ticket(User user, Vehicle vehicle)
+        {
+            var seat = vehicle.Seats.FirstOrDefault(x => x.IsTaken == false);
+            if (seat == null) throw new ArgumentNullException();
+            vehicle.Seats.FirstOrDefault(s => s.Id == seat.Id)!.IsTaken = true;
+            var ticket = new Ticket
+            {
+                Description = vehicle.Destination.Description,
+                ImgPath = vehicle.Destination.Url,
+                User = user,
+                Vehicle = vehicle,
+                Seat = seat.SeatNumber
+            };
+            _context.Vehicles.Update(vehicle);
+            _context.Tickets.Add(ticket); 
             _context.SaveChanges();
         }
     }

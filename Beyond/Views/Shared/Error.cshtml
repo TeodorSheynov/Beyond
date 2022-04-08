@@ -1,19 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Error";
-    var errors = ViewData["errors"] as IDictionary<string, List<string>>;
 }
-<div style="color: white">
-    <h1 class="text-danger">Oops.</h1>
-
-    @{
-        foreach (var key in errors.Keys)
-        {
-            <h3>@key</h3>
-            foreach (var value in errors[key])
-            {
-                <p>@value</p>
-            }
-        }
-    }
-
+@section CSS{
+    <link rel="stylesheet" href="~/css/error.css"/>
+}
+<div class="error" style="color: white">
+    <img class="error-image" src="/img/error.png"/>
+    <h1>@ViewData["Message"]</h1>
 </div>

@@ -43,9 +43,12 @@
             {
                 <nav>
                     <ul data-visible="false" id="primary-nav" class="primary-nav-bar flex">
+                        @if(User.IsInRole("Admin"))
+                        {
                         <li>
                             <a id="home" class="nav-text active" asp-controller="Control" asp-action="Index">Control Panel</a>
                         </li>
+                        }
                         <li>
                             <a id="home" class="nav-text active" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -59,13 +62,13 @@
                             <a id="crew" class="nav-text active" asp-controller="Crew" asp-action="Crew">Crew</a>
                         </li>
                         <li>
-                            <a class="nav-text active" asp-controller="Tickets" asp-action="MyTickets" ><i class="fa-solid fa-book"></i></a>
+                            <a class="nav-text active" asp-controller="Tickets" asp-action="MyTickets"><i class="fa-solid fa-book"></i></a>
                         </li>
                         <li>
                             <a class="nav-text active" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="fa-solid fa-user"></i></a>
                         </li>
                         <li>
-                            <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                            <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new {area = ""})" method="post">
                                 <a id="logout" style="cursor: pointer" class="nav-text active"><i class="fa-solid fa-right-from-bracket"></i></a>
                             </form>
                         </li>

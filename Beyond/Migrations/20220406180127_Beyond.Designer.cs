@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Beyond.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220406124312_Beyond")]
+    [Migration("20220406180127_Beyond")]
     partial class Beyond
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

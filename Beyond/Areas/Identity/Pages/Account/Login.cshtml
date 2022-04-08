@@ -10,10 +10,12 @@
         <div class="row">
             <h2 class="login-header" style="text-align:center">Login</h2>
             <div class="col">
-                <input asp-for="Input.Email" required="" class="login-input" type="text" placeholder="Email">
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                <div asp-validation-summary="All" style="color: orangered;"></div>
+                <span asp-validation-for="Input.Email" style="color: orangered;"></span>
+                <input asp-for="Input.Email" required="" class="login-input" type="email" placeholder="Email">
+                <span asp-validation-for="Input.Password" style="color: orangered;"></span>
                 <input asp-for="Input.Password" required="" class="login-input" type="password" placeholder="Password">
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
+
                 <input class="login-button" type="submit" value="Login">
             </div>
 

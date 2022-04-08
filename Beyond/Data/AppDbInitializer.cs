@@ -1,9 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
+
 using Beyond.Data.Models;
 using Beyond.Data.Models.Enums;
+using Beyond.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,23 +14,34 @@ namespace Beyond.Data
 {
     public class AppDbInitializer
     {
-        private static List<Seat> SeedSeats(int count)
+        public static async void CreateAdmin(IApplicationBuilder applicationBuilder)
         {
-            var seats = new List<Seat>();
-            for (int i = 1; i <= count; i++)
+            using var services = applicationBuilder.ApplicationServices.CreateScope();
+            var userManager = services.ServiceProvider.GetService<UserManager<User>>();
+            var roleManager = services.ServiceProvider.GetService<RoleManager<IdentityRole>>();
+
+            if (await userManager.FindByEmailAsync("admin@admin.com") != null) return;
+            var user = new User { UserName = "admin@admin.com", Email = "admin@admin.com" };
+            var result = await userManager.CreateAsync(user, "admin123456");
+            if (result.Errors.Any())
             {
-                seats.Add(new Seat()
-                {
-                    IsTaken = false,
-                    SeatNumber = i
-                });
+                throw new ApplicationException("Could not generate admin");
             }
 
-            return seats;
+            var role = new IdentityRole()
+            {
+                Name = "Admin"
+            };
+            var admin = await userManager.FindByEmailAsync("admin@admin.com");
+            await roleManager.CreateAsync(role);
+            await userManager.AddToRoleAsync(admin, "Admin");
+
+
         }
         public static void Seed(IApplicationBuilder applicationBuilder)
         {
-            using var serviceScope=applicationBuilder.ApplicationServices.CreateScope();
+            using var serviceScope = applicationBuilder.ApplicationServices.CreateScope();
+            var generate = serviceScope.ServiceProvider.GetService<IGenerate>();
             var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
             context.Database.Migrate();
             var seatsVehicleOne = 7;
@@ -83,27 +97,27 @@ namespace Beyond.Data
                         Id = "1",
                         Name = "Mars",
                         Description = "The red planet",
-                        Distance = 44000,
-                        Price = 9000000,
-                        Url =@"/img/tickets/mars.jpg"
+                        Distance = 54000000,
+                        Price = 900,
+                        Url =@"https://i.pinimg.com/564x/c9/d7/62/c9d76291e8969c9a49216015fbe837c8.jpg"
                     },
                     new Destination
                     {
                         Id = "2",
                         Name = "Moon",
                         Description = "Our Beloved moon",
-                        Distance = 44000,
-                        Price = 90000,
-                        Url = @"/img/tickets/moon.jpg",
+                        Distance = 384400,
+                        Price = 150,
+                        Url = @"https://i.pinimg.com/564x/5b/32/b9/5b32b958b1034594cc24163c72ab91ba.jpg",
                     },
                     new Destination
                     {
                         Id = "3",
                         Name = "Enceladus",
-                        Description = "Saturns cold moon",
-                        Distance = 44000,
-                        Price = 9000000,
-                        Url = @"/img/tickets/enceladus.jpg"
+                        Description = "Saturns cold moon .. out of reach ;s",
+                        Distance = 123000000,
+                        Price = 900,
+                        Url = @"https://i.pinimg.com/564x/22/b4/24/22b424ee410cb9aeb38291cf8075963f.jpg"
 
                     }
                 });
@@ -117,28 +131,36 @@ namespace Beyond.Data
                 {
                     Id = "1",
                     Name = "Starship Heavy",
-                    Speed = 4560,
+                    Speed = 27000,
                     PilotId = "1",
                     SerialNumber = "SN15",
-                    Seats = SeedSeats(seatsVehicleOne),
+                    Seats = generate.Seats(seatsVehicleTwo),
                     Departure = DateTime.Parse("06/29/2022 05:50:06"),
-                    Arrival = DateTime.Parse("12/29/2022 05:50:06"),
+                    LaunchSite = "Mariopul",
+                    Arrival = DateTime.Parse("06/29/2022 05:50:06").AddMonths(9),
                     DestinationId = "1",
                 },
                 new Vehicle
                 {
                     Id = "2",
                     Name = "Dragon",
-                    Speed = 3500,
+                    Speed = 27360,
                     PilotId = "3",
                     SerialNumber = "S2316",
-                    Seats =SeedSeats(seatsVehicleTwo),
+                    LaunchSite = "Sofia",
+                    Seats =generate.Seats(seatsVehicleTwo),
                     Departure = DateTime.Parse("07/15/2022 05:50:06"),
-                    Arrival = DateTime.Parse("08/29/2022 05:50:06"),
+                    Arrival = DateTime.Parse("07/15/2022 05:50:06").AddDays(3),
                     DestinationId = "2"
                 }
             });
             context.SaveChanges();
+            var pilot1 = context.Pilots.First(p => p.Id == "1");
+            pilot1.VehicleId = "1";
+            context.Pilots.Update(pilot1);
+            context.SaveChanges();
+
         }
+
     }
 }

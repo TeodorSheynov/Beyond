@@ -13,8 +13,10 @@ namespace Beyond.Data.Models
         [MaxLength(50)]
         public string Name { get; set; }
         [Required]
+        [MaxLength(50)]
         public string Description { get; set; }
         [Required]
+        [MaxLength(int.MaxValue)]
         public int Distance { get; set; }
         [Required]
         [Column(TypeName = "decimal(15, 2)")]

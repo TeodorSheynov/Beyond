@@ -44,7 +44,7 @@ namespace Beyond.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [EmailAddress]
+            [DataType(DataType.EmailAddress)]
             public string Email { get; set; }
 
             [Required]
@@ -99,6 +99,7 @@ namespace Beyond.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
                 }
+               
             }
 
             // If we got this far, something failed, redisplay form

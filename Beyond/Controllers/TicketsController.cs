@@ -1,145 +1,120 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Beyond.Data;
-using Beyond.Data.Models;
-using Beyond.Models;
 
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using Beyond.Data;
+using Beyond.Models;
+using Beyond.Data.Models;
+using Beyond.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace Beyond.Controllers
 {
     public class TicketsController : Controller
     {
-        private  ApplicationDbContext _context;
-        private  UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly ITakeViewModels _takeViewModels;
+        private readonly ITakeEntityById _takeEntityById;
+        private readonly ICreateAndSaveEntity _createAndSaveEntity;
+        private readonly IDeleteAndSaveEntity _deleteAndSaveEntity;
 
-        public TicketsController(
-            ApplicationDbContext ctx,
-            UserManager<User> userManager,
-            SignInManager<User> signInManager)
+        public TicketsController(ITakeViewModels takeViewModels, 
+            ITakeEntityById takeEntityById, 
+            ICreateAndSaveEntity createAndSaveEntity,
+            IDeleteAndSaveEntity deleteAndSaveEntity)
         {
-            _context = ctx;
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _takeViewModels = takeViewModels;
+            _takeEntityById = takeEntityById;
+            _createAndSaveEntity = createAndSaveEntity;
+            _deleteAndSaveEntity = deleteAndSaveEntity;
         }
 
         [Authorize]
         public IActionResult All()
         {
-            var vehicleFlights = _context
-                .Vehicles
-                .Select(x => new TicketViewModel()
-                {
-                    Id = x.Id,
-                    Name = x.Destination.Name,
-                    Path = x.Destination.Url,
-                    Price = $"{x.Destination.Price}$",
-                    Date = x.Departure,
-                    TicketsLeft = x.Seats.Count(s=>s.IsTaken==false),
-                    LaunchSite = x.LaunchSite
-                    
-                })
-                .ToList();
-            return View(vehicleFlights);
+            var tickets = _takeViewModels.TicketsOrNull();
+            switch (tickets)
+            {
+                case null:
+                    ViewData["Message"] = "There are no tickets.";
+                    return View("Error");
+                default:
+                    return View(tickets);
+            }
         }
         [Authorize]
-        public IActionResult Search(string id)
+        public IActionResult Search(string name)
         {
-            var vehicleFlights = _context
-                .Vehicles
-                .Where(v=>v.Destination.Id==id)
-                .Select(x => new TicketViewModel()
+            var tickets= _takeViewModels.TicketsOrNull();
+            switch (tickets)
+            {
+                case null:
+                    ViewData["Message"] = "There are no tickets.";
+                    return View("Error");
+                default:
                 {
-                    Id = x.Id,
-                    Name = x.Destination.Name,
-                    Path = x.Destination.Url,
-                    Price = $"{x.Destination.Price}$",
-                    Date = x.Departure,
-                    TicketsLeft = x.Seats.Count(s=>s.IsTaken==false),
-                    LaunchSite = x.LaunchSite
-
-                })
-                .ToList();
-            return View("All",vehicleFlights);
+                    var searchedTickets = tickets.Where(d => d.Name == name);
+                    return View("All",searchedTickets);
+                }
+            }
         }
 
         [Authorize]
         public IActionResult MyTickets()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
-            if (user == null) return View("Error");
+           
+            try
             {
-                var tickets = user
-                    .Tickets
-                    .Select(x => new MyTicketViewModel()
-                    {
-                        Id = x.Id,
-                        Departure = x.Vehicle.Departure,
-                        Name = x.Vehicle.Destination.Name,
-                        Price = x.Vehicle.Destination.Price,
-                        SeatNumber = x.Seat.ToString(),
-                        SerialNumber = x.Vehicle.SerialNumber
-                    });
-                return View(tickets);
+               
+                var myTickets = _takeViewModels.MyTicketOrNull();
+                switch (myTickets)
+                {
+                    case null:
+                        ViewData["Message"] = "You haven't bought ticket yet.";
+                        return View("Error");
+                    default:
+                        return View(myTickets);
+                }
             }
-
+            catch (Exception)
+            {
+                ViewData["Message"] = "Something went wrong.";
+                return View("Error");
+            }
         }
 
         [Authorize]
-        public async Task<IActionResult> Buy(string id)
+        public IActionResult Buy(string id)
         {
-            var user = _context
-                .Users
-                .FirstOrDefault(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-            var vehicle = _context
-                .Vehicles
-                .FirstOrDefault(x => x.Id == id);
-
-            if (vehicle != null)
+            var userId= User.FindFirstValue(ClaimTypes.NameIdentifier);
+            try
             {
-                var seat = vehicle.Seats.FirstOrDefault(x => x.IsTaken == false);
-                if (seat == null) return View("Error");
-                vehicle.Seats.FirstOrDefault(s => s.Id == seat.Id)!.IsTaken = true;
-                var ticket = new Ticket
-                {
-                    Description = vehicle.Destination.Description,
-                    ImgPath = vehicle.Destination.Url,
-                    User = user,
-                    Vehicle = vehicle,
-                    Seat = seat.SeatNumber
-                }; 
-                _context.Vehicles.Update(vehicle);
-                await _context.Tickets.AddAsync(ticket);
-                
-            
+                var user = _takeEntityById.User(userId);
+                var vehicle = _takeEntityById.Vehicle(id);
+                _createAndSaveEntity.Ticket(user,vehicle);
+                ViewData["id"] = id;
+                return RedirectToAction("MyTickets");
             }
-            await _context.SaveChangesAsync();
-
-            
-
-            ViewData["id"] = id;
-            return RedirectToAction("MyTickets");
+            catch (Exception)
+            {
+                ViewData["Message"] = "Something went wrong.";
+                return View("Error");
+            }
         }
-        public async Task<IActionResult> Delete(string id)
+        public IActionResult Delete(string id)
         {
-            var ticketToDelete = _context
-                .Tickets
-                .FirstOrDefault(t => t.Id == id);
-            if (ticketToDelete == null) return View("Error");
-            var vehicle = ticketToDelete.Vehicle;
-            vehicle.Seats.First(s => s.SeatNumber == ticketToDelete.Seat).IsTaken=false;
-            _context.Tickets.Remove(ticketToDelete);
-            _context.Vehicles.Update(vehicle);
-           await _context.SaveChangesAsync();
-
-            return RedirectToAction("MyTickets");
+            try
+            { 
+                _deleteAndSaveEntity.Ticket(id);
+                return RedirectToAction("MyTickets");
+            }
+            catch (Exception)
+            {
+                ViewData["Message"] = "Something went wrong while deleting the record.";
+                return View("Error");
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Beyond.Data.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Beyond.Data
 {
@@ -16,11 +17,6 @@ namespace Beyond.Data
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
 
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

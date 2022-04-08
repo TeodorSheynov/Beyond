@@ -1,11 +1,8 @@
-﻿
-@using Beyond.Models.Crew
+﻿@using Beyond.Models.Crew
 @model IEnumerable<CrewViewModel>
 @{
     var crew = Model.ToList();
     <div class="main">
-    @if(crew.Any())
-    {
         @foreach(var crewViewModel in crew)
         {
             <div class="crew-row">
@@ -23,10 +20,5 @@
                 </div>
             </div>
         }
-    }
-    else
-    {
-        <h1>Oops there are not crew members yet. :\</h1>
-    }
     </div>
 }

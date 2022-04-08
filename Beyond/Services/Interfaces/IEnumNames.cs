@@ -5,7 +5,7 @@ namespace Beyond.Services.Interfaces
 {
     public interface IEnumNames
     {
-        public List<PilotRanksViewModel> EnumRankNames();
+        public List<PilotRanksViewModel> PilotRankNames();
         public string UiRankDecorator(string rank);
     }
 }

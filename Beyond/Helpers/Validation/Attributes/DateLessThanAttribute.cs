@@ -22,7 +22,7 @@ namespace Beyond.Helpers.Validation.Attributes
             if (property == null)
                 throw new ArgumentException("Property with this name not found");
 
-            var comparisonValue = (DateTime)property.GetValue(validationContext.ObjectInstance);
+            var comparisonValue = (DateTime) property.GetValue(validationContext.ObjectInstance);
 
             if (currentValue < comparisonValue)
                 return new ValidationResult(ErrorMessage);
