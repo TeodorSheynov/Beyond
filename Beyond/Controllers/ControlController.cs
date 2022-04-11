@@ -1,4 +1,6 @@
-﻿using Beyond.Data.DTOs;
+﻿using System.Threading.Tasks;
+using Beyond.Models.DTOs;
+using Beyond.Models.DTOs.Input;
 using Beyond.Services.Interfaces;
 
 using Microsoft.AspNetCore.Mvc;
@@ -34,7 +36,7 @@ namespace Beyond.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public IActionResult Vehicle([FromForm] VehicleDto formData)
+        public async Task<IActionResult> Vehicle([FromForm] VehicleDto formData)
         {
             switch (ModelState.IsValid)
             {
@@ -43,7 +45,7 @@ namespace Beyond.Controllers
                     ViewBag.Pilots = _takeViewModels.ControlPilotsOrNull();
                     return View(formData);
                 default:
-                    _createAndSaveEntity.Vehicle(formData);
+                    await _createAndSaveEntity.Vehicle(formData);
 
                     return View("Index");
             }

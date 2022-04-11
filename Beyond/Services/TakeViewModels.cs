@@ -4,15 +4,14 @@ using System.Linq;
 using System.Security.Claims;
 
 using Beyond.Data;
-using Beyond.Data.Models;
 using Beyond.Models;
 using Beyond.Models.Control;
 using Beyond.Models.Crew;
 using Beyond.Models.Destination;
+using Beyond.Models.Ticket;
 using Beyond.Services.Interfaces;
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Beyond.Services
 {
@@ -37,6 +36,20 @@ namespace Beyond.Services
             var pilots = _context
                 .Pilots
                 .Where(p=>p.Vehicle==null)
+                .Select(x => new ControlPilotsViewModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                }).ToList();
+
+            return !pilots.Any() ? null : pilots;
+
+        }
+        public List<ControlPilotsViewModel> EditPilotsOrNull(string id)
+        {
+            var pilots = _context
+                .Pilots
+                .Where(p => p.Vehicle == null || p.Id==id)
                 .Select(x => new ControlPilotsViewModel()
                 {
                     Id = x.Id,
@@ -112,26 +125,24 @@ namespace Beyond.Services
 
         public List<MyTicketViewModel> MyTicketOrNull()
         {
-            if (_accessor.HttpContext != null)
-            {
-                var userId = _accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                var user = _takeEntityById.User(userId);
-                var tickets = user
-                    .Tickets
-                    .Select(x => new MyTicketViewModel()
-                    {
-                        Id = x.Id,
-                        Departure = x.Vehicle.Departure,
-                        Name = x.Vehicle.Destination.Name,
-                        Price = x.Vehicle.Destination.Price,
-                        SeatNumber = x.Seat.ToString(),
-                        SerialNumber = x.Vehicle.SerialNumber
-                    }).ToList();
-                return !tickets.Any() ? null : tickets;
-            }
+            if (_accessor.HttpContext == null)
+                throw new ArgumentNullException($"HttpContext is null.");
 
-            throw new ArgumentNullException(
-                );
+            var userId = _accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = _takeEntityById.User(userId);
+            var tickets = user
+                .Tickets
+                .Select(x => new MyTicketViewModel()
+                {
+                    Id = x.Id,
+                    Departure = x.Vehicle.Departure,
+                    Name = x.Vehicle.Destination.Name,
+                    Price = x.Vehicle.Destination.Price,
+                    SeatNumber = x.Seat.ToString(),
+                    SerialNumber = x.Vehicle.SerialNumber
+                }).ToList();
+            return !tickets.Any() ? null : tickets;
+
         }
     }
 }

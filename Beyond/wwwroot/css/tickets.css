@@ -100,5 +100,6 @@ div.example::after {
 
 .ticket-img {
     min-height: 532.97px;
+    max-height: 532.97px;
     object-fit: cover;
 }

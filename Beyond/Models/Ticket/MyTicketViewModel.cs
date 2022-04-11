@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Beyond.Models
+namespace Beyond.Models.Ticket
 {
     public class MyTicketViewModel
     {

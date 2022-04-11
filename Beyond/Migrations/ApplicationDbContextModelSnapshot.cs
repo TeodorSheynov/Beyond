@@ -26,9 +26,11 @@ namespace Beyond.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Distance")
+                        .HasMaxLength(2147483647)
                         .HasColumnType("int");
 
                     b.Property<string>("Name")

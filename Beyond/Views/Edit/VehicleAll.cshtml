@@ -1,26 +1,31 @@
-﻿@model IEnumerable<Beyond.Models.Ticket.MyTicketViewModel>
-
+﻿@model IEnumerable<Beyond.Models.DTOs.Output.VehicleViewModel>
 @section CSS
 {
+    <link rel="stylesheet" href="/css/sideBar.css">
     <link rel="stylesheet" href="/css/orders.css">
 }
-
+<partial name="_ControlNavigationPartial"></partial>
 <div class="wrap cf" style="color: white;">
-    <h1 class="projTitle">Beyond the ticket collection !</h1>
+    <h1 class="projTitle">Edit Vehicle Page</h1>
     <div class="heading cf">
-        <h1>My Tickets</h1>
+        <h1>All Vehicles</h1>
         <a asp-action="All" asp-controller="Tickets" class="continue">Continue Shopping</a>
     </div>
     <div class="cart">
         <table style="width: 100%;">
             <tr>
-                <th class="th-cart">Product</th>
-                <th class="th-cart">Serial Number</th>
-                <th class="th-cart">Date</th>
-                <th class="th-cart">Time</th>
+                <th class="th-cart">Name</th>
+                <th class="th-cart">Speed</th>
+                <th class="th-cart">Pilot</th>
+                <th class="th-cart">Serial N.</th>
                 <th class="th-cart">Seat</th>
-                <th class="th-cart">Price</th>
-                <th class="th-cancel">Cancel</th>
+                <th class="th-cart">Departure</th>
+                <th class="th-cancel">Arrival</th>
+                <th class="th-cancel">Destination</th>
+                <th class="th-cancel">Launch Site</th>
+                <th class="th-cancel">Edit</th>
+
+
             </tr>
             @{
                 foreach (var x in Model)
@@ -33,32 +38,47 @@
                         </td>
                         <td class="td-cart">
                             <div class="prodTotal cartSection">
-                                <p class="itemNumber">@x.SerialNumber</p>
+                                <p class="itemNumber">@x.Speed</p>
                             </div>
                         </td>
                         <td class="td-cart">
                             <div class="prodTotal cartSection">
-                                <p>@x.Departure.ToLongDateString()</p>
+                                <p>@x.Pilot.Name</p>
                             </div>
                         </td>
                         <td class="td-cart">
                             <div class="prodTotal cartSection">
-                                <p>@x.Departure.ToLongTimeString()</p>
+                                <p>@x.SerialNumber</p>
                             </div>
                         </td>
                         <td class="td-cart">
                             <div class="prodTotal cartSection">
-                                <p>@x.SeatNumber</p>
+                                <p>@x.Seats</p>
                             </div>
                         </td>
                         <td class="td-cart">
                             <div class="prodTotal cartSection">
-                                <p>@x.Price</p>
+                                <p>@x.Departure</p>
+                            </div>
+                        </td>
+                        <td class="td-cart">
+                            <div class="prodTotal cartSection">
+                                <p>@x.Arrival</p>
+                            </div>
+                        </td>
+                        <td class="td-cart">
+                            <div class="prodTotal cartSection">
+                                <p>@x.Destination.Name</p>
+                            </div>
+                        </td>
+                        <td class="td-cart">
+                            <div class="prodTotal cartSection">
+                                <p>@x.LaunchSite</p>
                             </div>
                         </td>
                         <td class="td-cancel">
                             <div class="cartSection removeWrap">
-                                <a asp-action="Delete" asp-route-id="@x.Id" asp-controller="Tickets" class="remove">x</a>
+                                <a asp-action="Vehicle" asp-route-id="@x.Id" asp-route-pilotId="@x.Pilot.Id" asp-controller="Edit" class="remove">Edit</a>
                             </div>
                         </td>
                     </tr>
@@ -68,7 +88,3 @@
         </table>
     </div>
 </div>
-@section Scripts
-{
-    @*<script src="/cartJS.js"></script>*@
-}

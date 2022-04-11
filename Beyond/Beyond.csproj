@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.EF6" Version="2.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.12" />
@@ -23,6 +25,8 @@
     <Folder Include="Helpers\Validation\Attributes\" />
     <Folder Include="Models\Destination\" />
     <Folder Include="Models\Crew\" />
+    <Folder Include="Models\DTOs\Output\" />
+    <Folder Include="Services\MapperProfiles\Profiles\" />
   </ItemGroup>
 
 </Project>

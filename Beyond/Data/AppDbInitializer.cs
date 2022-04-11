@@ -18,34 +18,34 @@ namespace Beyond.Data
         {
             using var services = applicationBuilder.ApplicationServices.CreateScope();
             var userManager = services.ServiceProvider.GetService<UserManager<User>>();
-            var roleManager = services.ServiceProvider.GetService<RoleManager<IdentityRole>>();
-
-            if (await userManager.FindByEmailAsync("admin@admin.com") != null) return;
-            var user = new User { UserName = "admin@admin.com", Email = "admin@admin.com" };
-            var result = await userManager.CreateAsync(user, "admin123456");
-            if (result.Errors.Any())
+            var assignRole = services.ServiceProvider.GetService<IAssignToRole>();
+            if (userManager != null && assignRole!=null)
             {
-                throw new ApplicationException("Could not generate admin");
+                var admin = await userManager.FindByEmailAsync("admin@admin.com");
+                if (admin != null) return;
+
+                var adminUser = new User { UserName = "admin@admin.com", Email = "admin@admin.com" };
+                var result = await userManager.CreateAsync(adminUser, "admin123456");
+                if (!result.Succeeded) throw new ApplicationException("Could not generate admin");
+                {
+                    admin = await userManager.FindByEmailAsync("admin@admin.com");
+                   await assignRole.Admin(admin);
+                }
             }
-
-            var role = new IdentityRole()
+            else
             {
-                Name = "Admin"
-            };
-            var admin = await userManager.FindByEmailAsync("admin@admin.com");
-            await roleManager.CreateAsync(role);
-            await userManager.AddToRoleAsync(admin, "Admin");
-
-
+                throw new ArgumentException("Service provided is null.");
+            }
         }
         public static void Seed(IApplicationBuilder applicationBuilder)
         {
             using var serviceScope = applicationBuilder.ApplicationServices.CreateScope();
             var generate = serviceScope.ServiceProvider.GetService<IGenerate>();
             var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+            if (context == null || generate==null) throw new ArgumentNullException($"Service provided is null.");
             context.Database.Migrate();
-            var seatsVehicleOne = 7;
-            var seatsVehicleTwo = 4;
+            const int seatsVehicleOne = 7;
+            const int seatsVehicleTwo = 4;
             if (!context.Pilots.Any())
             {
                 context.Pilots.AddRange(new List<Pilot>()
@@ -148,7 +148,7 @@ namespace Beyond.Data
                     PilotId = "3",
                     SerialNumber = "S2316",
                     LaunchSite = "Sofia",
-                    Seats =generate.Seats(seatsVehicleTwo),
+                    Seats =generate.Seats(seatsVehicleOne),
                     Departure = DateTime.Parse("07/15/2022 05:50:06"),
                     Arrival = DateTime.Parse("07/15/2022 05:50:06").AddDays(3),
                     DestinationId = "2"
@@ -157,10 +157,42 @@ namespace Beyond.Data
             context.SaveChanges();
             var pilot1 = context.Pilots.First(p => p.Id == "1");
             pilot1.VehicleId = "1";
-            context.Pilots.Update(pilot1);
+            var pilot2 = context.Pilots.First(p=>p.Id== "3");
+            pilot2.VehicleId = "2";
+            context.Pilots.UpdateRange(new List<Pilot>(){pilot1,pilot2});
             context.SaveChanges();
 
         }
 
+        public static async void GenerateRoles(IApplicationBuilder applicationBuilder)
+        {
+            using var services = applicationBuilder.ApplicationServices.CreateScope();
+            var roleManager = services.ServiceProvider.GetService<RoleManager<IdentityRole>>();
+            const string roleAdmin = "Admin";
+            const string roleUser = "User";
+            if (roleManager==null)
+            {
+                throw new ArgumentException("Service provided is null.");
+            }
+           
+           
+            if (!await roleManager.RoleExistsAsync(roleAdmin))
+            {
+                var adminRole = new IdentityRole()
+                {
+                    Name = roleAdmin
+                };
+                await roleManager.CreateAsync(adminRole);
+            }
+            if (!await roleManager.RoleExistsAsync(roleUser))
+            {
+                var userRole = new IdentityRole()
+                {
+                    Name = roleUser
+                };
+                await roleManager.CreateAsync(userRole);
+            }
+                
+        }
     }
 }

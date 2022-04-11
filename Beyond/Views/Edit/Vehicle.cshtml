@@ -11,7 +11,7 @@
     <!-- Page content -->
     <div id="panel-container" class="panel-content">
        <div style="text-align: center; color: white;">
-    <form id="MyForm" asp-action="Vehicle" asp-controller="Control" method="post" style="display: inline-block; width: 100%; max-width: 500px;">
+    <form id="MyForm" asp-action="Vehicle" asp-controller="Edit" method="post" style="display: inline-block; width: 100%; max-width: 500px;">
         <h2 class="login-header" style="text-align:center">Create Vehicle</h2>
         <label>Name</label><br>
         <span asp-validation-for="Name" style="color: orangered"></span>
@@ -75,7 +75,7 @@
             </select><br>
         }
       
-        <input class="login-button" type="submit" value="Create">
+        <input class="login-button" type="submit" asp-controller="Edit" asp-action="Vehicle" asp-route-id="@ViewBag.Id" value="Edit">
 
     </form>
            <script type="text/javascript">

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
-
+using System.Threading.Tasks;
+using AutoMapper;
 using Beyond.Data;
-using Beyond.Data.DTOs;
 using Beyond.Data.Models;
+using Beyond.Models.DTOs;
+using Beyond.Models.DTOs.Input;
 using Beyond.Services.Interfaces;
 
 namespace Beyond.Services
@@ -13,47 +15,30 @@ namespace Beyond.Services
         private readonly ITakeEntityById _takeEntityById;
         private readonly ApplicationDbContext _context;
         private readonly IGenerate _generate;
-        public CreateAndSaveEntity(ITakeEntityById takeEntityById, ApplicationDbContext context, IGenerate generate)
+        private readonly IMapper _mapper;
+        public CreateAndSaveEntity(ITakeEntityById takeEntityById, ApplicationDbContext context, IGenerate generate, IMapper mapper)
         {
             _takeEntityById = takeEntityById;
             _context = context;
             _generate = generate;
+            _mapper = mapper;
         }
-        public void Vehicle(VehicleDto dto)
+        public async Task<int> Vehicle(VehicleDto dto)
         {
             var pilot = _takeEntityById.Pilot(dto.PilotId);
             var seats = _generate.Seats(dto.Seats);
-            var vehicle = new Vehicle
-            {
-                Arrival = dto.Arrival,
-                Departure = dto.Departure,
-                Destination = _takeEntityById.Destination(dto.DestinationId),
-                DestinationId = dto.DestinationId,
-                LaunchSite = dto.LaunchSite,
-                Name = dto.Name,
-                OnFLight = false,
-                Pilot = pilot,
-                PilotId = dto.PilotId,
-                Seats = seats,
-                SerialNumber = dto.SerialNumber,
-                Speed = dto.Speed,
-            };
+            var vehicle = _mapper.Map<Vehicle>(dto);
+            vehicle.Pilot=pilot;
+            vehicle.Seats=seats;
             pilot.Vehicle= vehicle;
             _context.Update(pilot);
             _context.Vehicles.Add(vehicle);
-            _context.SaveChanges();
+          return await _context.SaveChangesAsync();
         }
 
         public  void Destination(DestinationDto dto)
         {
-            var destination = new Destination
-            {
-                Name = dto.Name,
-                Description = dto.Description,
-                Distance = dto.Distance,
-                Price = dto.Price,
-                Url = dto.Url
-            };
+            var destination = _mapper.Map<Destination>(dto);
              _context.Destinations.Add(destination);
               _context.SaveChanges();
         }

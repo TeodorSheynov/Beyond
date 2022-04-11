@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Beyond.Data.Models.Enums;
 
-namespace Beyond.Data.DTOs
+namespace Beyond.Models.DTOs.Input
 {
     public class PilotDto
     {

@@ -11,7 +11,7 @@ namespace Beyond.Services
             var seats = new List<Seat>();
             for (var i = 1; i <= count; i++)
             {
-                seats.Add(new Data.Models.Seat()
+                seats.Add(new Seat()
                 {
                     IsTaken = false,
                     SeatNumber = i

@@ -1,3 +1,5 @@
+using System.Reflection;
+using AutoMapper;
 using Beyond.Data;
 using Beyond.Data.Models;
 using Beyond.Services;
@@ -10,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 
 namespace Beyond
 {
@@ -49,6 +52,7 @@ namespace Beyond
             {
                 config.LoginPath = "/identity/Account/Login";
             });
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddControllersWithViews();
             services.AddScoped<IEnumNames, EnumNames>();
             services.AddScoped<ITakeEntityById, TakeEntityById>();
@@ -56,6 +60,7 @@ namespace Beyond
             services.AddScoped<ICreateAndSaveEntity, CreateAndSaveEntity>();
             services.AddScoped<IGenerate, Generate>();
             services.AddScoped<IDeleteAndSaveEntity, DeleteAndSaveEntity>();
+            services.AddScoped<IAssignToRole, AssignToRole>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)
@@ -86,8 +91,11 @@ namespace Beyond
                 endpoints.MapRazorPages();
 
             });
+            //Generate "Admin" and "User" roles
+            AppDbInitializer.GenerateRoles(app);
+            //Creates admin acc
             AppDbInitializer.CreateAdmin(app);
-            //Data Seed
+            //Data Seed "optional"
             AppDbInitializer.Seed(app);
         }
     }

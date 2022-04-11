@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Beyond.Helpers.Validation.Attributes;
 
-namespace Beyond.Data.DTOs
+namespace Beyond.Models.DTOs.Input
 {
     
     public class VehicleDto
@@ -11,7 +11,7 @@ namespace Beyond.Data.DTOs
         [Required]
         public string Name { get; set; }
         [Required]
-        [MaxLength(int.MaxValue)]
+        [Range(1,300000)]
         public int Speed { get; set; }
         [Required]
         public string PilotId { get; set; }

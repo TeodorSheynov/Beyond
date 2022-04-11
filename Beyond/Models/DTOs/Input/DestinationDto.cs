@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
-namespace Beyond.Data.DTOs
+namespace Beyond.Models.DTOs.Input
 {
     public class DestinationDto
     {
@@ -11,7 +12,7 @@ namespace Beyond.Data.DTOs
         [Required]
         public decimal Price { get; set; }
         [Required]
-        [StringLength(int.MaxValue)]
+        [Range(1,Int32.MaxValue)]
         public int Distance { get; set; }
         [Required]
         public string Url { get; set; }
