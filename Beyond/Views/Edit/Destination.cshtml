@@ -1,0 +1,26 @@
+﻿@model Beyond.Models.DTOs.Input.DestinationDto
+@section CSS
+{
+    <link rel="stylesheet" href="/css/sideBar.css">
+}
+
+<partial name="_ControlNavigationPartial"/>
+<div id="panel-container" class="panel-content">
+    <div style="text-align: center; color: white;">
+        <form id="MyForm" asp-action="Destination" asp-controller="Edit" method="post"  style="display: inline-block; width: 100%; max-width: 500px;">
+            <h2 class="login-header" style="text-align:center">Add Destination</h2>
+            <label>Name</label><br>
+            <input class="login-input" required="" type="text" id="name" asp-for="Name"><br>
+            <label>Distance</label><br>
+            <input class="login-input" required="" type="number" id="distance" asp-for="Distance"><br>
+            <label>Description</label><br>
+            <textarea class="login-input" required="" type="text-box" id="description" asp-for="Description" rows="3"></textarea><br>
+            <label>Image Url</label><br>
+            <input class="login-input" required="" type="url" id="url" asp-for="Url"><br>
+            <label>Price</label><br>
+            <input class="login-input" required="" type="number" id="price" asp-for="Price"><br>
+       
+            <input class="login-button" asp-route-id="@ViewBag.Id" asp-action="Destination" asp-controller="Edit" type="submit" value="Edit">
+        </form>
+    </div>
+</div>

@@ -19,7 +19,7 @@ var cls = ["home", "crew", "destinations", "reglog"];
 var loc = window.location.href.toLowerCase();
 var register = loc.indexOf("/identity/account/register") !== -1;
 var login = loc.indexOf("/identity/account/login") !== -1;
-var destinations = loc.indexOf("/destinations") !== -1;
+var destinations = loc.indexOf("/destinations") !== -1 && !(loc.indexOf("/destinationsall")!== -1);
 var control = loc.indexOf("/control");
 if (destinations) {
     bod.classList.remove(...cls);

@@ -3,7 +3,7 @@ using Beyond.Models.Control;
 
 namespace Beyond.Models.DTOs.Output
 {
-    public class VehicleViewModel
+    public class EditVehicleViewModel
     {
         public string Id { get; set; }
         public string Name { get; set; }

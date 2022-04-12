@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Beyond.Models.DTOs.Output.VehicleViewModel>
+﻿@model IEnumerable<Beyond.Models.DTOs.Output.EditVehicleViewModel>
 @section CSS
 {
     <link rel="stylesheet" href="/css/sideBar.css">
@@ -9,7 +9,6 @@
     <h1 class="projTitle">Edit Vehicle Page</h1>
     <div class="heading cf">
         <h1>All Vehicles</h1>
-        <a asp-action="All" asp-controller="Tickets" class="continue">Continue Shopping</a>
     </div>
     <div class="cart">
         <table style="width: 100%;">
@@ -20,9 +19,9 @@
                 <th class="th-cart">Serial N.</th>
                 <th class="th-cart">Seat</th>
                 <th class="th-cart">Departure</th>
-                <th class="th-cancel">Arrival</th>
-                <th class="th-cancel">Destination</th>
-                <th class="th-cancel">Launch Site</th>
+                <th class="th-cart">Arrival</th>
+                <th class="th-cart">Destination</th>
+                <th class="th-cart">Launch Site</th>
                 <th class="th-cancel">Edit</th>
 
 

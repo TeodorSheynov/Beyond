@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Beyond.Models.DTOs.Output.EditDestinationViewModel>
+@section CSS
+{
+    <link rel="stylesheet" href="/css/sideBar.css">
+    <link rel="stylesheet" href="/css/orders.css">
+}
+<partial name="_ControlNavigationPartial"></partial>
+<div class="wrap cf" style="color: white;">
+    <h1 class="projTitle">Edit Vehicle Page</h1>
+    <div class="heading cf">
+        <h1>All Destinations</h1>
+    </div>
+    <div class="cart">
+        <table style="width: 100%;">
+            <tr>
+                <th class="th-cart">Name</th>
+                <th class="th-cart">Description</th>
+                <th class="th-cart">Price</th>
+                <th class="th-cart">Distance N.</th>
+                <th class="th-cart">Url</th>
+                <th class="th-cancel">Edit</th>
+                
+
+            </tr>
+            @{
+                foreach (var x in Model)
+                {
+                    <tr>
+                        <td class="td-cart">
+                            <div class="cartSection">
+                                <h3>@x.Name</h3>
+                            </div>
+                        </td>
+                        <td class="td-cart">
+                            <div class="prodTotal cartSection">
+                                <p >@x.Description</p>
+                            </div>
+                        </td>
+                        <td class="td-cart">
+                            <div class="prodTotal cartSection">
+                                <p class="itemNumber">@x.Price</p>
+                            </div>
+                        </td>
+                        <td class="td-cart">
+                            <div class="prodTotal cartSection">
+                                <p class="itemNumber">@x.Distance</p>
+                            </div>
+                        </td>
+                        <td class="td-cart">
+                            <div class="prodTotal cartSection">
+                                <p style="overflow-wrap: break-word;max-width: 400px;">@x.Url</p>
+                            </div>
+                            
+                            
+                        </td>
+                        <td class="td-cancel">
+                            <div class="cartSection removeWrap">
+                                <a asp-action="Destination" asp-route-id="@x.Id" asp-controller="Edit" class="remove">Edit</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+           
+        </table>
+    </div>
+</div>

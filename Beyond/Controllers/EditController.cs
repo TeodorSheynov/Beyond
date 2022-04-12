@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Beyond.Data;
+using Beyond.Data.Models;
 using Beyond.Models.Control;
 using Beyond.Models.DTOs.Input;
 using Beyond.Models.DTOs.Output;
@@ -27,7 +29,7 @@ namespace Beyond.Controllers
         {
             var vehicles = _context
                 .Vehicles
-                .Select(v => new VehicleViewModel()
+                .Select(v => new EditVehicleViewModel()
                 {
                     Id = v.Id,
                     Name = v.Name,
@@ -55,35 +57,69 @@ namespace Beyond.Controllers
         {
             ViewBag.Destinations = _takeViewModels.ControlDestinationsOrNull();
             ViewBag.Pilots = _takeViewModels.EditPilotsOrNull(pilotId);
-            var vehicle = _takeEntityById.Vehicle(id);
-           
-            if (vehicle!=null)
-            {
-                ViewBag.Id = id;
-                VehicleDto dto = new VehicleDto
-                {
-                    Name = vehicle.Name,
-                    Speed = vehicle.Speed,
-                    PilotId = vehicle.PilotId,
-                    SerialNumber = vehicle.SerialNumber,
-                    Seats = vehicle.Speed,
-                    Departure = vehicle.Departure,
-                    Arrival = vehicle.Arrival,
-                    DestinationId = vehicle.DestinationId,
-                    LaunchSite = vehicle.LaunchSite
-                };
-                return View(dto);
-            }
-            
-            return View("Error");
+
+            ViewBag.Id = id;
+            var dto = _context
+                .Vehicles
+                .Where(x => x.Id == id)
+                .ToArray()
+                .Select(x => _mapper.Map<VehicleDto>(x))
+                .Single();
+
+            return View(dto);
         }
         [HttpPost]
-        public IActionResult Vehicle([FromForm] VehicleDto dto,string id)
+        public IActionResult Vehicle([FromForm] VehicleDto dto, string id)
         {
             var vehicle = _takeEntityById.Vehicle(id);
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Destinations = _takeViewModels.ControlDestinationsOrNull();
+                ViewBag.Pilots = _takeViewModels.EditPilotsOrNull(dto.PilotId);
+                ViewBag.Id = id;
+                return View(dto);
+            }
             _mapper.Map(dto, vehicle);
-            return View();
+            _context.Vehicles.Update(vehicle);
+            _context.SaveChanges();
+            return RedirectToAction("VehicleAll");
         }
 
+        public IActionResult DestinationsAll()
+        {
+            var destinations = _context
+                .Destinations
+                .Select(x => _mapper.Map<EditDestinationViewModel>(x))
+                .ToList();
+            return View(destinations);
+        }
+
+        public IActionResult Destination(string id)
+        {
+
+            ViewBag.Id = id;
+            var dto = _context
+                .Destinations
+                .Where(x => x.Id == id)
+                .ToArray()
+                .Select(d => _mapper.Map<DestinationDto>(d))
+                .Single();
+            return View(dto);
+        }
+        [HttpPost]
+        public IActionResult Destination([FromForm] DestinationDto dto, string id)
+        {
+            var destination = _takeEntityById.Destination(id);
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Id = id;
+                return View(dto);
+            }
+
+            _mapper.Map(dto, destination);
+            _context.Destinations.Update(destination);
+            _context.SaveChanges();
+            return RedirectToAction("DestinationsAll");
+        }
     }
 }
