@@ -7,8 +7,8 @@ namespace Beyond.Controllers
 {
     public class DestinationsController : Controller
     {
-        private readonly ITakeViewModels _takeViewModels;
-        public DestinationsController(ITakeViewModels takeViewModels)
+        private readonly ITakeModels _takeViewModels;
+        public DestinationsController(ITakeModels takeViewModels)
         {
             _takeViewModels = takeViewModels;
         }

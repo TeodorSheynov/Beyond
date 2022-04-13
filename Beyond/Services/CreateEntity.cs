@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Beyond.Data;
 using Beyond.Data.Models;
-using Beyond.Models.DTOs;
 using Beyond.Models.DTOs.Input;
 using Beyond.Services.Interfaces;
 
@@ -16,7 +15,10 @@ namespace Beyond.Services
         private readonly ApplicationDbContext _context;
         private readonly IGenerate _generate;
         private readonly IMapper _mapper;
-        public CreateEntity(ITakeEntityById takeEntityById, ApplicationDbContext context, IGenerate generate, IMapper mapper)
+        public CreateEntity(
+            ITakeEntityById takeEntityById, 
+            ApplicationDbContext context, 
+            IGenerate generate, IMapper mapper)
         {
             _takeEntityById = takeEntityById;
             _context = context;
@@ -45,14 +47,7 @@ namespace Beyond.Services
 
         public  void Pilot(PilotDto dto)
         {
-            var pilot = new Pilot()
-            {
-                Age = dto.Age,
-                Description = dto.Description,
-                ImgPath = dto.Url,
-                Rank = dto.Rank,
-                Name = dto.Name
-            };
+            var pilot = _mapper.Map<Pilot>(dto);
             _context.Pilots.Add(pilot);
             _context.SaveChanges();
         }

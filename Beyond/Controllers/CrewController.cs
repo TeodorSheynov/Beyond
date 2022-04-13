@@ -8,8 +8,8 @@ namespace Beyond.Controllers
 {
     public class CrewController : Controller
     {
-        private readonly ITakeViewModels _takeViewModels;
-        public CrewController(ITakeViewModels takeViewModels)
+        private readonly ITakeModels _takeViewModels;
+        public CrewController(ITakeModels takeViewModels)
         {
             _takeViewModels = takeViewModels;
         }

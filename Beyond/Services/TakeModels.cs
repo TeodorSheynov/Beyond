@@ -16,14 +16,14 @@ using Microsoft.AspNetCore.Http;
 
 namespace Beyond.Services
 {
-    public class TakeViewModels : ITakeViewModels
+    public class TakeModels : ITakeModels
     {
         private readonly ApplicationDbContext _context;
         private readonly ITakeRanks _enumNames;
         private readonly IHttpContextAccessor _accessor;
         private readonly ITakeEntityById _takeEntityById;
         private readonly IMapper _mapper;
-        public TakeViewModels(ApplicationDbContext context,
+        public TakeModels(ApplicationDbContext context,
             ITakeRanks enumNames,
             IHttpContextAccessor accessor, 
             ITakeEntityById takeEntityById, IMapper mapper)
@@ -63,7 +63,7 @@ namespace Beyond.Services
 
         }
 
-        public List<EditVehicleViewModel> EditVehicleOrNull()
+        public List<EditVehicleViewModel> VehiclesForEditOrNull()
         {
             var vehicles = _context
                 .Vehicles
@@ -91,7 +91,7 @@ namespace Beyond.Services
             return !vehicles.Any() ? null : vehicles;
         }
 
-        public List<EditDestinationViewModel> EditDestinationOrNull()
+        public List<EditDestinationViewModel> DestinationsForEditOrNull()
         {
             var destinations = _context
                 .Destinations
@@ -100,7 +100,7 @@ namespace Beyond.Services
             return !destinations.Any() ? null : destinations;
         }
 
-        public List<EditPilotViewModel> EditPilotsOrNull()
+        public List<EditPilotViewModel> PilotsForEditOrNull()
         {
             var pilots = _context
                 .Pilots
@@ -172,7 +172,7 @@ namespace Beyond.Services
             return !ticketViewModel.Any() ? null : ticketViewModel;
         }
 
-        public List<MyTicketViewModel> MyTicketOrNull()
+        public List<MyTicketViewModel> MyTicketsOrNull()
         {
             if (_accessor.HttpContext == null)
                 throw new ArgumentNullException($"HttpContext is null.");

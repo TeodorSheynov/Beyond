@@ -7,19 +7,20 @@ using Beyond.Models.Ticket;
 
 namespace Beyond.Services.Interfaces
 {
-    public interface ITakeViewModels
+    public interface ITakeModels
     {
         public List<ControlPilotsViewModel> ControlPilotsOrNull();
         public List<ControlDestinationsViewModel> ControlDestinationsOrNull();
+        public List<ControlPilotsViewModel> AvailablePilotsOrNull(string id);
+
         public List<CrewViewModel> CrewOrNull();
         public List<DestinationViewModel> DestinationsOrNull();
         public List<TicketViewModel> TicketsOrNull();
-        public List<MyTicketViewModel> MyTicketOrNull();
-        public List<ControlPilotsViewModel> AvailablePilotsOrNull(string id);
-        public List<EditVehicleViewModel> EditVehicleOrNull();
-        public List<EditDestinationViewModel> EditDestinationOrNull();
+        public List<MyTicketViewModel> MyTicketsOrNull();
 
-        public List<EditPilotViewModel> EditPilotsOrNull();
+        public List<EditVehicleViewModel> VehiclesForEditOrNull();
+        public List<EditDestinationViewModel> DestinationsForEditOrNull();
+        public List<EditPilotViewModel> PilotsForEditOrNull();
 
     }
 }

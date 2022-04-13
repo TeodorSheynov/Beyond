@@ -12,9 +12,9 @@ namespace Beyond.Controllers
     public class ControlController : Controller
     {
         private readonly ITakeRanks _enumValues;
-        private readonly ITakeViewModels _takeViewModels;
+        private readonly ITakeModels _takeViewModels;
         private readonly ICreateEntity _createAndSaveEntity;
-        public ControlController(ITakeRanks enumValues, ITakeViewModels takeViewModels, ICreateEntity createAndSaveEntity)
+        public ControlController(ITakeRanks enumValues, ITakeModels takeViewModels, ICreateEntity createAndSaveEntity)
         {
             _enumValues = enumValues;
             _takeViewModels = takeViewModels;

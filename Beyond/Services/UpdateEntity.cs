@@ -12,7 +12,10 @@ namespace Beyond.Services
         private readonly ApplicationDbContext _context;
         private readonly ITakeEntityById _takeEntityById;
         private readonly IMapper _mapper;
-        public UpdateEntity(ApplicationDbContext context, ITakeEntityById takeEntityById, IMapper mapper)
+        public UpdateEntity(
+            ApplicationDbContext context, 
+            ITakeEntityById takeEntityById, 
+            IMapper mapper)
         {
             _context = context;
             _takeEntityById = takeEntityById;

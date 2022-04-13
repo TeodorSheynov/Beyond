@@ -14,12 +14,12 @@ namespace Beyond.Controllers
 {
     public class EditController : Controller
     {
-        private readonly ITakeViewModels _takeViewModels;
+        private readonly ITakeModels _takeViewModels;
         private readonly ITakeRanks _takeRanks;
         private readonly ICreateDto _createDto;
         private readonly IUpdateEntity _update;
         public EditController(
-            ITakeViewModels takeViewModels,
+            ITakeModels takeViewModels,
             ITakeRanks takeRanks, 
             ICreateDto createDto, 
             IUpdateEntity update)
@@ -32,7 +32,7 @@ namespace Beyond.Controllers
         // GET
         public IActionResult VehicleAll()
         {
-            var vehicles = _takeViewModels.EditVehicleOrNull();
+            var vehicles = _takeViewModels.VehiclesForEditOrNull();
             switch (vehicles)
             {
                 case null:
@@ -70,7 +70,7 @@ namespace Beyond.Controllers
 
         public IActionResult DestinationsAll()
         {
-            var destinations = _takeViewModels.EditDestinationOrNull();
+            var destinations = _takeViewModels.DestinationsForEditOrNull();
             switch (destinations)
             {
                 case null:
@@ -104,7 +104,7 @@ namespace Beyond.Controllers
 
         public IActionResult PilotsAll()
         {
-            var pilots = _takeViewModels.EditPilotsOrNull();
+            var pilots = _takeViewModels.PilotsForEditOrNull();
             switch (pilots)
             {
                 case null:

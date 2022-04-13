@@ -17,7 +17,6 @@ namespace Beyond.Services
                     SeatNumber = i
                 });
             }
-
             return seats;
         }
     }

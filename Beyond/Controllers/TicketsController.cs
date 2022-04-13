@@ -15,12 +15,12 @@ namespace Beyond.Controllers
 {
     public class TicketsController : Controller
     {
-        private readonly ITakeViewModels _takeViewModels;
+        private readonly ITakeModels _takeViewModels;
         private readonly ITakeEntityById _takeEntityById;
         private readonly ICreateEntity _createAndSaveEntity;
         private readonly IDeleteEntity _deleteAndSaveEntity;
 
-        public TicketsController(ITakeViewModels takeViewModels, 
+        public TicketsController(ITakeModels takeViewModels, 
             ITakeEntityById takeEntityById, 
             ICreateEntity createAndSaveEntity,
             IDeleteEntity deleteAndSaveEntity)
@@ -68,7 +68,7 @@ namespace Beyond.Controllers
             try
             {
                
-                var myTickets = _takeViewModels.MyTicketOrNull();
+                var myTickets = _takeViewModels.MyTicketsOrNull();
                 switch (myTickets)
                 {
                     case null:

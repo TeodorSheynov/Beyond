@@ -56,11 +56,13 @@ namespace Beyond
             services.AddControllersWithViews();
             services.AddScoped<ITakeRanks, TakeRanks>();
             services.AddScoped<ITakeEntityById, TakeEntityById>();
-            services.AddScoped<ITakeViewModels, TakeViewModels>();
+            services.AddScoped<ITakeModels, TakeModels>();
             services.AddScoped<ICreateEntity, CreateEntity>();
             services.AddScoped<IGenerate, Generate>();
             services.AddScoped<IDeleteEntity, DeleteEntity>();
             services.AddScoped<IAssignToRole, AssignToRole>();
+            services.AddScoped<ICreateDto, CreateDto>();
+            services.AddScoped<IUpdateEntity, UpdateEntity>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)

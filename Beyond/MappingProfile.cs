@@ -1,10 +1,8 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using Beyond.Data.Models;
-using Beyond.Models.Destination;
 using Beyond.Models.DTOs.Input;
 using Beyond.Models.DTOs.Output;
-using Beyond.Services.Interfaces;
+using Beyond.Models;
 
 namespace Beyond
 {
@@ -25,7 +23,7 @@ namespace Beyond
             this.CreateMap<Destination, DestinationDto>().ReverseMap();
 
             this.CreateMap<EditPilotViewModel, Pilot>()
-                .ForMember(x=>x.ImgPath,opt=>opt.MapFrom(y=>y.Url))
+                .ForMember(x=>x.ImgPath, opt=>opt.MapFrom(y=>y.Url))
                 .ReverseMap()
                 .ForMember(x=>x.Url,opt=>opt.MapFrom(y=>y.ImgPath));
             this.CreateMap<PilotDto, Pilot>().ForMember(x => x.ImgPath, opt => opt.MapFrom(y => y.Url))

@@ -10,7 +10,10 @@ namespace Beyond.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public CreateDto(ApplicationDbContext context, IMapper mapper)
+        public CreateDto(
+            ApplicationDbContext context, 
+            IMapper mapper
+            )
         {
             _context = context;
             _mapper = mapper;

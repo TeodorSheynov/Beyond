@@ -8,7 +8,9 @@ namespace Beyond.Services
     {
         private readonly ITakeEntityById _takeEntityById;
         private readonly ApplicationDbContext _context;
-        public DeleteEntity(ITakeEntityById takeEntityById, ApplicationDbContext context)
+        public DeleteEntity(
+            ITakeEntityById takeEntityById, 
+            ApplicationDbContext context)
         {
             _takeEntityById = takeEntityById;
             _context = context;
