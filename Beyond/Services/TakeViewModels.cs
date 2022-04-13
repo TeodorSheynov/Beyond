@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-
+using AutoMapper;
 using Beyond.Data;
 using Beyond.Models;
 using Beyond.Models.Control;
 using Beyond.Models.Crew;
 using Beyond.Models.Destination;
+using Beyond.Models.DTOs.Output;
 using Beyond.Models.Ticket;
 using Beyond.Services.Interfaces;
 
@@ -18,18 +19,20 @@ namespace Beyond.Services
     public class TakeViewModels : ITakeViewModels
     {
         private readonly ApplicationDbContext _context;
-        private readonly IEnumNames _enumNames;
+        private readonly ITakeRanks _enumNames;
         private readonly IHttpContextAccessor _accessor;
         private readonly ITakeEntityById _takeEntityById;
+        private readonly IMapper _mapper;
         public TakeViewModels(ApplicationDbContext context,
-            IEnumNames enumNames,
+            ITakeRanks enumNames,
             IHttpContextAccessor accessor, 
-            ITakeEntityById takeEntityById)
+            ITakeEntityById takeEntityById, IMapper mapper)
         {
             _context = context;
             _enumNames = enumNames;
             _accessor = accessor;
             _takeEntityById = takeEntityById;
+            _mapper = mapper;
         }
         public List<ControlPilotsViewModel> ControlPilotsOrNull()
         {
@@ -45,7 +48,7 @@ namespace Beyond.Services
             return !pilots.Any() ? null : pilots;
 
         }
-        public List<ControlPilotsViewModel> EditPilotsOrNull(string id)
+        public List<ControlPilotsViewModel> AvailablePilotsOrNull(string id)
         {
             var pilots = _context
                 .Pilots
@@ -58,6 +61,52 @@ namespace Beyond.Services
 
             return !pilots.Any() ? null : pilots;
 
+        }
+
+        public List<EditVehicleViewModel> EditVehicleOrNull()
+        {
+            var vehicles = _context
+                .Vehicles
+                .Select(v => new EditVehicleViewModel()
+                {
+                    Id = v.Id,
+                    Name = v.Name,
+                    Speed = v.Speed,
+                    Pilot = new ControlPilotsViewModel()
+                    {
+                        Id = v.PilotId,
+                        Name = v.Pilot.Name
+                    },
+                    SerialNumber = v.SerialNumber,
+                    Seats = v.Seats.Count,
+                    Departure = v.Departure,
+                    Arrival = v.Arrival,
+                    Destination = new ControlDestinationsViewModel()
+                    {
+                        Id = v.DestinationId,
+                        Name = v.Destination.Name
+                    },
+                    LaunchSite = v.LaunchSite,
+                }).ToList();
+            return !vehicles.Any() ? null : vehicles;
+        }
+
+        public List<EditDestinationViewModel> EditDestinationOrNull()
+        {
+            var destinations = _context
+                .Destinations
+                .Select(x => _mapper.Map<EditDestinationViewModel>(x))
+                .ToList();
+            return !destinations.Any() ? null : destinations;
+        }
+
+        public List<EditPilotViewModel> EditPilotsOrNull()
+        {
+            var pilots = _context
+                .Pilots
+                .Select(x => _mapper.Map<EditPilotViewModel>(x))
+                .ToList();
+            return !pilots.Any() ? null : pilots;
         }
 
         public List<ControlDestinationsViewModel> ControlDestinationsOrNull()
@@ -73,7 +122,7 @@ namespace Beyond.Services
             return !destinations.Any() ? null : destinations;
         }
 
-        public List<CrewViewModel> CrewMembersOrNull()
+        public List<CrewViewModel> CrewOrNull()
         {
             var crew = _context
                 .Pilots

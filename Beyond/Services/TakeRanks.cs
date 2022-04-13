@@ -6,7 +6,7 @@ using Beyond.Services.Interfaces;
 
 namespace Beyond.Services
 {
-    public class EnumNames : IEnumNames
+    public class TakeRanks : ITakeRanks
     {
         public List<PilotRanksViewModel> PilotRankNames()
         {

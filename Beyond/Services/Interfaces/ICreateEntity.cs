@@ -5,7 +5,7 @@ using Beyond.Models.DTOs.Input;
 
 namespace Beyond.Services.Interfaces
 {
-    public interface ICreateAndSaveEntity
+    public interface ICreateEntity
     {
         public Task<int> Vehicle(VehicleDto dto);
         public void Destination(DestinationDto dto);

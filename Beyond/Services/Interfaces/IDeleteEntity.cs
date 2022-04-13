@@ -1,6 +1,6 @@
 ﻿namespace Beyond.Services.Interfaces
 {
-    public interface IDeleteAndSaveEntity
+    public interface IDeleteEntity
     {
         public void Ticket(string id);
     }

@@ -10,13 +10,13 @@ using Beyond.Services.Interfaces;
 
 namespace Beyond.Services
 {
-    public class CreateAndSaveEntity :ICreateAndSaveEntity
+    public class CreateEntity :ICreateEntity
     {
         private readonly ITakeEntityById _takeEntityById;
         private readonly ApplicationDbContext _context;
         private readonly IGenerate _generate;
         private readonly IMapper _mapper;
-        public CreateAndSaveEntity(ITakeEntityById takeEntityById, ApplicationDbContext context, IGenerate generate, IMapper mapper)
+        public CreateEntity(ITakeEntityById takeEntityById, ApplicationDbContext context, IGenerate generate, IMapper mapper)
         {
             _takeEntityById = takeEntityById;
             _context = context;

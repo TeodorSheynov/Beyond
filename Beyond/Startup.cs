@@ -54,12 +54,12 @@ namespace Beyond
             });
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddControllersWithViews();
-            services.AddScoped<IEnumNames, EnumNames>();
+            services.AddScoped<ITakeRanks, TakeRanks>();
             services.AddScoped<ITakeEntityById, TakeEntityById>();
             services.AddScoped<ITakeViewModels, TakeViewModels>();
-            services.AddScoped<ICreateAndSaveEntity, CreateAndSaveEntity>();
+            services.AddScoped<ICreateEntity, CreateEntity>();
             services.AddScoped<IGenerate, Generate>();
-            services.AddScoped<IDeleteAndSaveEntity, DeleteAndSaveEntity>();
+            services.AddScoped<IDeleteEntity, DeleteEntity>();
             services.AddScoped<IAssignToRole, AssignToRole>();
         }
 

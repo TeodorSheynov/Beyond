@@ -18,7 +18,7 @@ namespace Beyond.Controllers
         [Authorize]
         public IActionResult Crew()
         {
-            var crew = _takeViewModels.CrewMembersOrNull();
+            var crew = _takeViewModels.CrewOrNull();
             switch (crew)
             {
                 case null:

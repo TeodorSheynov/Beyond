@@ -11,10 +11,10 @@ namespace Beyond.Controllers
 {
     public class ControlController : Controller
     {
-        private readonly IEnumNames _enumValues;
+        private readonly ITakeRanks _enumValues;
         private readonly ITakeViewModels _takeViewModels;
-        private readonly ICreateAndSaveEntity _createAndSaveEntity;
-        public ControlController(IEnumNames enumValues, ITakeViewModels takeViewModels, ICreateAndSaveEntity createAndSaveEntity)
+        private readonly ICreateEntity _createAndSaveEntity;
+        public ControlController(ITakeRanks enumValues, ITakeViewModels takeViewModels, ICreateEntity createAndSaveEntity)
         {
             _enumValues = enumValues;
             _takeViewModels = takeViewModels;

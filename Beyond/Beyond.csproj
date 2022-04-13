@@ -25,7 +25,6 @@
     <Folder Include="Helpers\Validation\Attributes\" />
     <Folder Include="Models\Destination\" />
     <Folder Include="Models\Crew\" />
-    <Folder Include="Services\MapperProfiles\Profiles\" />
   </ItemGroup>
 
 </Project>

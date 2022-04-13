@@ -17,13 +17,13 @@ namespace Beyond.Controllers
     {
         private readonly ITakeViewModels _takeViewModels;
         private readonly ITakeEntityById _takeEntityById;
-        private readonly ICreateAndSaveEntity _createAndSaveEntity;
-        private readonly IDeleteAndSaveEntity _deleteAndSaveEntity;
+        private readonly ICreateEntity _createAndSaveEntity;
+        private readonly IDeleteEntity _deleteAndSaveEntity;
 
         public TicketsController(ITakeViewModels takeViewModels, 
             ITakeEntityById takeEntityById, 
-            ICreateAndSaveEntity createAndSaveEntity,
-            IDeleteAndSaveEntity deleteAndSaveEntity)
+            ICreateEntity createAndSaveEntity,
+            IDeleteEntity deleteAndSaveEntity)
         {
             _takeViewModels = takeViewModels;
             _takeEntityById = takeEntityById;

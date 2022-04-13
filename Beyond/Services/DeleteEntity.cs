@@ -4,11 +4,11 @@ using Beyond.Services.Interfaces;
 
 namespace Beyond.Services
 {
-    public class DeleteAndSaveEntity :IDeleteAndSaveEntity
+    public class DeleteEntity :IDeleteEntity
     {
         private readonly ITakeEntityById _takeEntityById;
         private readonly ApplicationDbContext _context;
-        public DeleteAndSaveEntity(ITakeEntityById takeEntityById, ApplicationDbContext context)
+        public DeleteEntity(ITakeEntityById takeEntityById, ApplicationDbContext context)
         {
             _takeEntityById = takeEntityById;
             _context = context;
