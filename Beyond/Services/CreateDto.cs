@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoMapper;
 using Beyond.Data;
 using Beyond.Models.DTOs.Input;
 using Beyond.Services.Interfaces;
+using Microsoft.AspNetCore.Routing.Patterns;
 
 namespace Beyond.Services
 {
@@ -10,16 +12,18 @@ namespace Beyond.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly ITakeEntityById _takeEntityById;
         public CreateDto(
             ApplicationDbContext context, 
-            IMapper mapper
-            )
+            IMapper mapper, ITakeEntityById takeEntityById)
         {
             _context = context;
             _mapper = mapper;
+            _takeEntityById = takeEntityById;
         }
         public VehicleDto Vehicle(string id)
         {
+            _takeEntityById.Vehicle(id);
             var dto = _context
                 .Vehicles
                 .Where(x => x.Id == id)

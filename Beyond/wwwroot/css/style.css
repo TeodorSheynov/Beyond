@@ -338,16 +338,18 @@ input[type=submit]:hover {
 }
 
 .crew-img {
-    /*  width: 33%;
     min-width: 440px;
-    min-height: 550px;*/
+    min-height: 550px;
 }
 
 .crew-card {
     display: flex;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
-
+.crew-row {
+    max-width: 800px;
+    min-width: 800px
+}
 .crew-container {
     display: flex;
     position: relative;
@@ -409,11 +411,18 @@ input[type=submit]:hover {
 
     .crew-img {
         width: 100%;
+        min-width: unset;
+        min-height: unset;
     }
 
     .crew-container {
         width: 100%;
         max-height: 400px;
+    }
+    .crew-row {
+        max-width: none;
+        min-width: unset;
+        width: 100%;
     }
 }
 /*Home page*/

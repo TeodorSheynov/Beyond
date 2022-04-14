@@ -11,14 +11,17 @@ namespace Beyond.Controllers
 {
     public class ControlController : Controller
     {
-        private readonly ITakeRanks _enumValues;
-        private readonly ITakeModels _takeViewModels;
-        private readonly ICreateEntity _createAndSaveEntity;
-        public ControlController(ITakeRanks enumValues, ITakeModels takeViewModels, ICreateEntity createAndSaveEntity)
+        private readonly ITakeRanks _ranks;
+        private readonly ITakeModels _takeModels;
+        private readonly ICreateEntity _creteEntity;
+        public ControlController(
+            ITakeRanks ranks, 
+            ITakeModels takeModels, 
+            ICreateEntity creteEntity)
         {
-            _enumValues = enumValues;
-            _takeViewModels = takeViewModels;
-            _createAndSaveEntity = createAndSaveEntity;
+            _ranks = ranks;
+            _takeModels = takeModels;
+            _creteEntity = creteEntity;
         }
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
@@ -29,8 +32,8 @@ namespace Beyond.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Vehicle()
         {
-            ViewBag.Destinations = _takeViewModels.ControlDestinationsOrNull();
-            ViewBag.Pilots = _takeViewModels.ControlPilotsOrNull();
+            ViewBag.Destinations = _takeModels.ControlDestinationsOrNull();
+            ViewBag.Pilots = _takeModels.ControlPilotsOrNull();
             return View();
         }
 
@@ -41,11 +44,11 @@ namespace Beyond.Controllers
             switch (ModelState.IsValid)
             {
                 case false:
-                    ViewBag.Destinations = _takeViewModels.ControlDestinationsOrNull();
-                    ViewBag.Pilots = _takeViewModels.ControlPilotsOrNull();
+                    ViewBag.Destinations = _takeModels.ControlDestinationsOrNull();
+                    ViewBag.Pilots = _takeModels.ControlPilotsOrNull();
                     return View(formData);
                 default:
-                    await _createAndSaveEntity.Vehicle(formData);
+                    await _creteEntity.Vehicle(formData);
 
                     return View("Index");
             }
@@ -54,7 +57,7 @@ namespace Beyond.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Pilot()
         {
-            var ranks = _enumValues.PilotRankNames();
+            var ranks = _ranks.PilotRankNames();
 
             ViewData["ranks"] = ranks;
             return View();
@@ -68,13 +71,13 @@ namespace Beyond.Controllers
             {
                 case false:
                     {
-                        var ranks = _enumValues.PilotRankNames();
+                        var ranks = _ranks.PilotRankNames();
 
                         ViewData["ranks"] = ranks;
                         return View(formData);
                     }
                 default:
-                    _createAndSaveEntity.Pilot(formData);
+                    _creteEntity.Pilot(formData);
                     return View("Index");
             }
         }
@@ -94,7 +97,7 @@ namespace Beyond.Controllers
                 case false:
                     return View(formData);
                 default:
-                    _createAndSaveEntity.Destination(formData);
+                    _creteEntity.Destination(formData);
                     return View("Index");
             }
         }

@@ -15,26 +15,26 @@ namespace Beyond.Controllers
 {
     public class TicketsController : Controller
     {
-        private readonly ITakeModels _takeViewModels;
+        private readonly ITakeModels _takeModels;
         private readonly ITakeEntityById _takeEntityById;
-        private readonly ICreateEntity _createAndSaveEntity;
-        private readonly IDeleteEntity _deleteAndSaveEntity;
+        private readonly ICreateEntity _createEntity;
+        private readonly IDeleteEntity _deleteEntity;
 
-        public TicketsController(ITakeModels takeViewModels, 
+        public TicketsController(ITakeModels takeModels, 
             ITakeEntityById takeEntityById, 
-            ICreateEntity createAndSaveEntity,
-            IDeleteEntity deleteAndSaveEntity)
+            ICreateEntity createEntity,
+            IDeleteEntity deleteEntity)
         {
-            _takeViewModels = takeViewModels;
+            _takeModels = takeModels;
             _takeEntityById = takeEntityById;
-            _createAndSaveEntity = createAndSaveEntity;
-            _deleteAndSaveEntity = deleteAndSaveEntity;
+            _createEntity = createEntity;
+            _deleteEntity = deleteEntity;
         }
 
         [Authorize]
         public IActionResult All()
         {
-            var tickets = _takeViewModels.TicketsOrNull();
+            var tickets = _takeModels.TicketsOrNull();
             switch (tickets)
             {
                 case null:
@@ -47,7 +47,7 @@ namespace Beyond.Controllers
         [Authorize]
         public IActionResult Search(string name)
         {
-            var tickets= _takeViewModels.TicketsOrNull();
+            var tickets= _takeModels.TicketsOrNull();
             switch (tickets)
             {
                 case null:
@@ -68,7 +68,7 @@ namespace Beyond.Controllers
             try
             {
                
-                var myTickets = _takeViewModels.MyTicketsOrNull();
+                var myTickets = _takeModels.MyTicketsOrNull();
                 switch (myTickets)
                 {
                     case null:
@@ -93,7 +93,7 @@ namespace Beyond.Controllers
             {
                 var user = _takeEntityById.User(userId);
                 var vehicle = _takeEntityById.Vehicle(id);
-                _createAndSaveEntity.Ticket(user,vehicle);
+                _createEntity.Ticket(user,vehicle);
                 ViewData["id"] = id;
                 return RedirectToAction("MyTickets");
             }
@@ -103,11 +103,12 @@ namespace Beyond.Controllers
                 return View("Error");
             }
         }
+        [Authorize]
         public IActionResult Delete(string id)
         {
             try
             { 
-                _deleteAndSaveEntity.Ticket(id);
+                _deleteEntity.Ticket(id);
                 return RedirectToAction("MyTickets");
             }
             catch (Exception)
