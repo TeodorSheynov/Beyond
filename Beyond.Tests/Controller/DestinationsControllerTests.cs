@@ -5,6 +5,7 @@ using Beyond.Models.Crew;
 using Beyond.Models.Destination;
 using Beyond.Tests.Mocks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Xunit;
 
 namespace Beyond.Tests.Controller
@@ -15,7 +16,8 @@ namespace Beyond.Tests.Controller
         public void DestinationsControllerShouldReturnDefaultViewWhenThereAreDestinations()
         {
             var takeModelInstance = TakeModelsMock.DestinationsOrNullPopulatedInstance;
-            var controller = new DestinationsController(takeModelInstance);
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var controller = new DestinationsController(takeModelInstance,cache);
             //Act
             var result = controller.Destinations();
 
@@ -29,7 +31,8 @@ namespace Beyond.Tests.Controller
         [Fact]
         public void DestinationsControllerShouldReturnErrorViewWhenThereAreNoDestinations()
         {
-            var controller = new DestinationsController(TakeModelsMock.DestinationsOrNullEmptyInstance);
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var controller = new DestinationsController(TakeModelsMock.DestinationsOrNullEmptyInstance, cache);
             var result = controller.Destinations();
 
             Assert.NotNull(result);

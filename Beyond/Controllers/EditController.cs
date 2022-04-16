@@ -107,7 +107,7 @@ namespace Beyond.Controllers
                 ViewData["Message"] = "Not Found";
                 return View("Error");
             }
-
+            ViewBag.Id=id;
             var dto = _createDto.Destination(id);
             return View(dto);
         }

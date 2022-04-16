@@ -56,6 +56,7 @@ namespace Beyond
             {
                 config.LoginPath = "/identity/Account/Login";
             });
+            services.AddMemoryCache();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddControllersWithViews();
             services.AddScoped<ITakeRanks, TakeRanks>();

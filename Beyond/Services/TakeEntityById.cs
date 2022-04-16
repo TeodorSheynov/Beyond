@@ -42,7 +42,7 @@ namespace Beyond.Services
             var vehicle= _context
                 .Vehicles
                 .FirstOrDefault(v => v.Id == id);
-            return vehicle ?? throw new ArgumentException($"Unknown vehicle. Vehicle id: {id}");
+            return vehicle ?? throw new ArgumentNullException($"Unknown vehicle. Vehicle id: {id}");
         }
 
         public Ticket Ticket(string id)
