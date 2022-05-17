@@ -24,10 +24,7 @@ namespace Beyond.Helpers.Validation.Attributes
 
             var comparisonValue = (DateTime) property.GetValue(validationContext.ObjectInstance);
 
-            if (currentValue < comparisonValue)
-                return new ValidationResult(ErrorMessage);
-
-            return ValidationResult.Success;
+            return currentValue < comparisonValue ? new ValidationResult(ErrorMessage) : ValidationResult.Success;
         }
     }
 }

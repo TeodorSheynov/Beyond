@@ -2,7 +2,6 @@
 using Beyond.Data.Models;
 using Beyond.Models.DTOs.Input;
 using Beyond.Models.DTOs.Output;
-using Beyond.Models;
 
 namespace Beyond
 {

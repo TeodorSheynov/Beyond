@@ -4,6 +4,7 @@ using Beyond.Data;
 using Beyond.Data.Models;
 using Beyond.Services;
 using Beyond.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
@@ -34,7 +35,7 @@ namespace Beyond
             {
                 options
                     .UseLazyLoadingProxies()
-                    .UseSqlServer(@"Server=DESKTOP-NRLASJF\SQLEXPRESS;Database=Beyond;Integrated Security=true;");
+                    .UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddMvc(options =>
@@ -51,7 +52,6 @@ namespace Beyond
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
-
             services.ConfigureApplicationCookie(config =>
             {
                 config.LoginPath = "/identity/Account/Login";
